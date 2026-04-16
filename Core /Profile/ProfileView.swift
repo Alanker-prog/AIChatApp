@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-
 struct ProfileView: View {
     
     @State var showSettingsView: Bool = false
@@ -23,14 +22,12 @@ struct ProfileView: View {
                             Image(systemName: "gear")
                                 .font(.headline)
                         }
-                        
                     }
                 }
+                .sheet(isPresented: $showSettingsView) {
+                    SettingsView() 
+                }
         }
-        .sheet(isPresented: $showSettingsView) {
-            Text("SettingView")
-        }
-        
     }
 }
 

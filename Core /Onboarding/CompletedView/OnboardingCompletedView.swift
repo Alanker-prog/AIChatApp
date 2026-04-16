@@ -30,7 +30,6 @@ struct OnboardingCompletedView: View {
     }
     
     func onFinishButtonPressed() {
-        // logic on complete onboa
         appState.updateViewState(showTabBarView: true)
     }
 }
