@@ -17,10 +17,20 @@ struct AppViewBuilder<TabbarView: View, OnboardingView: View>: View {
         ZStack {
             if showTabbar {
                 tabbarView
-                    .transition(.move(edge: .trailing))
+                    .transition(
+                        .asymmetric(
+                            insertion: .move(edge: .trailing),  // TabBar влетает справа
+                            removal: .move(edge: .trailing)     // TabBar улетает вправо
+                        )
+                    )
             } else {
                 onboarding
-                    .transition(.move(edge: .leading))
+                    .transition(
+                        .asymmetric(
+                            insertion: .move(edge: .leading),   // Onboarding влетает слева
+                            removal: .move(edge: .leading)      // Onboarding улетает влево
+                        )
+                    )
             }
         }
         .animation(.smooth, value: showTabbar)
