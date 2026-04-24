@@ -8,6 +8,7 @@
 import SwiftUI
 
 @Observable
+@MainActor
 class AppState {
     
     private(set) var showTabBar: Bool = false {

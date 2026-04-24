@@ -19,20 +19,21 @@ struct OnboardingColorView: View {
         .padding()
         
         .safeAreaInset(edge: .bottom) {
-            if selectedColor != nil {
-                ctaButton
+            if let selectedColor {
+                ctaButton(selectedColor: selectedColor)
                     .padding()
                     .background(.ultraThinMaterial)
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
         .animation(.easeInOut, value: selectedColor)
-        
+        .toolbarVisibility(.hidden, for: .navigationBar)
+
     }
     
-    private var ctaButton: some View {
+    private func ctaButton(selectedColor: Color) -> some View {
         NavigationLink {
-            OnboardingCompletedView()
+            OnboardingCompletedView(selectedColor: selectedColor)
         } label: {
             Text("Continue")
                 .callToActionButton()
@@ -77,4 +78,5 @@ struct OnboardingColorView: View {
     NavigationStack {
         OnboardingColorView()
     }
+    .environment(AppState())
 }
