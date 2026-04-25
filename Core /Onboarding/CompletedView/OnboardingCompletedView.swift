@@ -22,14 +22,17 @@ struct OnboardingCompletedView: View {
                 .fontWeight(.semibold)
                 .foregroundStyle(selectedColor)
             
-            Text("You set up you're profile. You can start chatting now.")
-                .font(.title2)
-                .fontWeight(.medium)
-                .foregroundStyle(.secondary)
-                .padding(.trailing)
-                
+            Group {
+                Text("You set up your profile.")
+                +   Text("\nYou can start chatting now.")
+            }
+            .font(.title2)
+            .fontWeight(.medium)
+            .foregroundStyle(.secondary)
+            
         }
-        .frame(maxHeight: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+        
         .safeAreaInset(edge: .bottom) {
             ctaButton
         }
