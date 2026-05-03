@@ -7,97 +7,101 @@
 
 import Foundation
 
-struct AvatarModel {
+struct AvatarModel: Identifiable, Hashable {
     
-    let avatarId: String
-    let name: String?
-    let characterOption: CharacterOption?
-    let characterAction: CharacterAction?
-    let characterLocation: CharacterLocation?
-    let profileImageName: String?
-    let autorId: String?
-    let dateCreated: Date?
+    let id: String
+    let name: String
+    let character: Character
+    let profileImageURL: String?
+    let authorID: String
+    let createdAt: Date
     
-    init(
-        avatarId: String,
-        name: String? = nil,
-        characterOption: CharacterOption? = nil,
-        characterAction: CharacterAction? = nil,
-        characterLocation: CharacterLocation? = nil,
-        profileImageName: String? = nil,
-        autorId: String? = nil,
-        dateCreated: Date? = nil
-    ) {
-        self.avatarId = avatarId
-        self.name = name
-        self.characterOption = characterOption
-        self.characterAction = characterAction
-        self.characterLocation = characterLocation
-        self.profileImageName = profileImageName
-        self.autorId = autorId
-        self.dateCreated = dateCreated
-    }
+    // MARK: - Derived
     
-    var characterDescription: String {
-        AvatarDescriptionBuilder(avatar: self).characterDescription
-    }
-    
-    static var mock: AvatarModel {
-        mocks[0]
-    }
-    
-    static var mocks: [AvatarModel] {
-        [
-            AvatarModel(avatarId: UUID().uuidString, name: "Alfa", characterOption: .alien, characterAction: .dancing, characterLocation: .spase, profileImageName: Constants.randomeImage, autorId: UUID().uuidString, dateCreated: .now),
-            AvatarModel(avatarId: UUID().uuidString, name: "Beta", characterOption: .dog, characterAction: .sitting, characterLocation: .park, profileImageName: Constants.randomeImage, autorId: UUID().uuidString, dateCreated: .now),
-            AvatarModel(avatarId: UUID().uuidString, name: "Gamma", characterOption: .cat, characterAction: .sleeping, characterLocation: .museum, profileImageName: Constants.randomeImage, autorId: UUID().uuidString, dateCreated: .now),
-            AvatarModel(avatarId: UUID().uuidString, name: "Delta", characterOption: .women, characterAction: .eating, characterLocation: .moll, profileImageName: Constants.randomeImage, autorId: UUID().uuidString, dateCreated: .now)
-        ]
+    var description: String {
+        "\(character.option.rawValue) is \(character.action.rawValue) in the \(character.location.rawValue)"
     }
 }
 
-struct AvatarDescriptionBuilder {
-    let characterOption: CharacterOption
-    let characterAction: CharacterAction
-    let characterLocation: CharacterLocation
-    
-    init(characterOption: CharacterOption, characterAction: CharacterAction, characterLocation: CharacterLocation) {
-        self.characterOption = characterOption
-        self.characterAction = characterAction
-        self.characterLocation = characterLocation
-    }
-    
-    init(avatar: AvatarModel) {
-        self.characterOption = avatar.characterOption ?? .`default`
-        self.characterAction = avatar.characterAction ?? .`default`
-        self.characterLocation = avatar.characterLocation ?? .`default`
-    }
-    
-    var characterDescription: String {
-        "A \(characterOption.rawValue) this is \(characterAction.rawValue) in the \(characterLocation.rawValue)"
-    }
+// MARK: - Character
+
+struct Character: Hashable {
+    let option: CharacterOption
+    let action: CharacterAction
+    let location: CharacterLocation
 }
 
-enum CharacterOption: String {
-    case man, women, alien, dog, cat
-    
-    static var `default`: Self {
-        .man
-    }
+// MARK: - Enums
+
+enum CharacterOption: String, CaseIterable {
+    case man
+    case woman
+    case alien
+    case dog
+    case cat
 }
 
-enum CharacterAction: String {
-    case smiling, sitting, eating, drinking, wolking, shopping, studying, dancing, crying, sleeping
-    
-    static var `default`: Self {
-        .smiling
-    }
+enum CharacterAction: String, CaseIterable {
+    case smiling
+    case sitting
+    case eating
+    case drinking
+    case walking
+    case shopping
+    case studying
+    case dancing
+    case crying
+    case sleeping
 }
 
-enum CharacterLocation: String {
-    case park, moll, museum, city, desert, forest, spase
+enum CharacterLocation: String, CaseIterable {
+    case park
+    case mall
+    case museum
+    case city
+    case desert
+    case forest
+    case space
+}
+
+// MARK: - Mocks
+
+extension AvatarModel {
     
-    static var `default`: Self {
-        .park
-    }
+    static let mocks: [AvatarModel] = [
+        AvatarModel(
+            id: "1",
+            name: "Alfa",
+            character: Character(option: .alien, action: .dancing, location: .space),
+            profileImageURL: Constants.randomeImage,
+            authorID: "user_1",
+            createdAt: .now
+        ),
+        AvatarModel(
+            id: "2",
+            name: "Beta",
+            character: Character(option: .dog, action: .sitting, location: .park),
+            profileImageURL: Constants.randomeImage,
+            authorID: "user_2",
+            createdAt: .now
+        ),
+        AvatarModel(
+            id: "3",
+            name: "Gamma",
+            character: Character(option: .cat, action: .sleeping, location: .museum),
+            profileImageURL: Constants.randomeImage,
+            authorID: "user_3",
+            createdAt: .now
+        ),
+        AvatarModel(
+            id: "4",
+            name: "Delta",
+            character: Character(option: .woman, action: .eating, location: .mall),
+            profileImageURL: Constants.randomeImage,
+            authorID: "user_4",
+            createdAt: .now
+        )
+    ]
+    
+    static let mock: AvatarModel = mocks[0]
 }
