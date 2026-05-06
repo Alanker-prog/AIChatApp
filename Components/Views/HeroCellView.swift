@@ -24,7 +24,7 @@ struct HeroCellView: View {
         .overlay(
             alignment: .bottomLeading,
             content: {
-                VStack(alignment: .leading ,spacing: 2) {
+                VStack(alignment: .leading, spacing: 2) {
                     if let title {
                         Text(title)
                             .font(.headline)
@@ -37,17 +37,7 @@ struct HeroCellView: View {
                 .foregroundStyle(.white)
                 .padding()
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .background(
-                    LinearGradient(
-                        colors: [
-                         Color.black.opacity(0),
-                         Color.black.opacity(0.3),
-                         Color.black.opacity(0.3)
-                        ],
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
-            )
+                .addingGradiendBackgroundForText()
         })
         .cornerRadius(16)
     }

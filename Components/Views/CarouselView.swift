@@ -44,7 +44,7 @@ struct CarouselView<T: Identifiable, Content: View>: View {
                 ForEach(items) { item in
                     Circle()
                         .fill(item.id == selection ? Color.blue : Color.gray.opacity(0.7))
-                        .frame(width: 10, height: 10)
+                        .frame(width: 8, height: 8)
                 }
             }
             .animation(.linear, value: selection)

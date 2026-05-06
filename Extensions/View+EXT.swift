@@ -21,4 +21,20 @@ extension View {
     func tappableBackground() -> some View {
         background(.black.opacity(0.001))
     }
+    
+    func addingGradiendBackgroundForText() -> some View {
+        background(
+            LinearGradient(
+                stops: [
+                    .init(color: .black.opacity(0), location: 0.0),
+                    .init(color: .black.opacity(0.03), location: 0.4),
+                    .init(color: .black.opacity(0.1), location: 0.65),
+                    .init(color: .black.opacity(0.3), location: 0.9),
+                    .init(color: .black.opacity(0.5), location: 1.0)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+    )
+    }
 }

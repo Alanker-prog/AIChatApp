@@ -33,7 +33,7 @@ struct Character: Hashable {
 
 // MARK: - Enums
 
-enum CharacterOption: String, CaseIterable {
+enum CharacterOption: String, Hashable, CaseIterable {
     case man
     case woman
     case alien
