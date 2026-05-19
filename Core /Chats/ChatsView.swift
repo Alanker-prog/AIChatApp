@@ -15,14 +15,30 @@ struct ChatsView: View {
         NavigationStack {
             List {
                 ForEach(chats) { chat in
-                    Text(chat.id)
+                    ChatRowCellViewBuilder(
+                        currentUserId: chat.userID,
+                        chat: chat,
+                        getAvatar: {
+                            return.mock
+                        },
+                        getLastChatMessage: {
+                            return.mock
+                            
+                        }
+                    )
+                    .anyButton(.highlight) {
+                        // action
+                    }
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
             }
-                .navigationTitle("Chats")
+            .navigationTitle("Chats")
+            .listStyle(.plain)
         }
     }
 }
 
 #Preview {
     ChatsView()
+        .preferredColorScheme(.dark)
 }

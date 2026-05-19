@@ -13,11 +13,16 @@ struct ChatMessageModel: Identifiable, Hashable {
     let chatID: String
     let authorID: String?      // nil = сообщение от AI
     let content: AIOutput?
-    let seenByIDs: [String]
+    let seenByIDs: [String]?
     let createdAt: Date
     
     var isAIMessage: Bool {
         authorID == nil
+    }
+    
+    func hasBeenSeenBy(userId: String) -> Bool {
+        guard let seenByIDs else { return false }
+        return seenByIDs.contains(userId)
     }
 }
 

@@ -15,25 +15,41 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             List {
-                Button {
-                    onSignOutPressed()
-                } label: {
-                    Text("Sign out")
+                
+                // MARK: - Appearance
+                Section("Appearance") {
+                    Toggle(
+                        "Dark Mode",
+                        isOn: Binding(
+                            get: { appState.isDarkMode },
+                            set: { appState.updateColorScheme(isDarkMode: $0) }
+                        )
+                    )
                 }
-
+                
+                // MARK: - Account
+                Section("Account") {
+                    Button {
+                        onSignOutPressed()
+                    } label: {
+                        Text("Sign out")
+                            .foregroundStyle(.red)
+                    }
+                }
             }
             .navigationTitle("Settings")
         }
-
     }
     
-    func onSignOutPressed() {
-            dismiss() // сначала закрываем sheet
-            Task {
-                try? await Task.sleep(for: .seconds(0.3)) // ждём анимацию закрытия
-                appState.updateViewState(showTabBarView: false)
-            }
+    // MARK: - Actions
+    
+    private func onSignOutPressed() {
+        dismiss()
+        Task {
+            try? await Task.sleep(for: .seconds(0.3))
+            appState.updateViewState(showTabBarView: false)
         }
+    }
 }
 
 #Preview {

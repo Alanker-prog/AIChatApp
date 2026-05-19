@@ -16,6 +16,7 @@ struct AIChatAppApp: App {
         WindowGroup {
             AppView()
                 .environment(appState)
+                .preferredColorScheme(appState.isDarkMode ? .dark : .light)
         }
     }
 }
