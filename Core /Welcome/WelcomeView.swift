@@ -102,4 +102,5 @@ struct WelcomeView: View {
 
 #Preview {
     WelcomeView()
+        .environment(AppState())
 }
