@@ -9,6 +9,7 @@ import SwiftUI
 struct WelcomeView: View {
     
     @State var imageName: String = Constants.randomeImage
+    @State private var showSignInView: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -74,12 +75,24 @@ struct WelcomeView: View {
                     .callToActionButton()
             }
             
-            Text("Already have an account? Sign in.")
-                .font(.headline)
-                .foregroundStyle(.white)
-                .onTapGesture {
-                    
+            HStack(spacing: 4) {
+
+                Text("Have an account?")
+                    .foregroundStyle(.secondary)
+
+                Button {
+                    showSignInView = true
+                } label: {
+                    Text("Sign in")
+                        .fontWeight(.semibold)
                 }
+                .buttonStyle(.plain)
+            }
+            .font(.footnote)
+        }
+        .sheet(isPresented: $showSignInView) {
+            CreateAccountView()
+                .presentationDetents([.medium])
         }
     }
     
