@@ -11,6 +11,7 @@ struct ProfileView: View {
     
     @State var showSettingsView: Bool = false
     @State private var currentUser: UserModel? = .mock
+    @State private var isPremium: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -77,6 +78,22 @@ struct ProfileView: View {
                 Text("Screen Notifications")
             } label: {
                 Label("Notifications", systemImage: "bell")
+            }
+            
+            NavigationLink {
+                Text("Premium View")
+            } label: {
+                HStack {
+                    if isPremium {
+                        Label("Premium", systemImage: "star.fill")
+                            .foregroundStyle(.yellow)
+                    } else {
+                        Label("Free", systemImage: "star.fill")
+                            .foregroundStyle(.primary)
+                            
+                    }
+                    
+                }
             }
             
         }
