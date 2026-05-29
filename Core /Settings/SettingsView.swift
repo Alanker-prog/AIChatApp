@@ -11,6 +11,8 @@ struct SettingsView: View {
     
     @Environment(\.dismiss) private var dismiss
     @Environment(AppState.self) private var appState
+    @State private var isAnonymousUser: Bool = true
+    @State private var showCreateAccountView: Bool = false
     
     var body: some View {
         NavigationStack {
@@ -29,15 +31,29 @@ struct SettingsView: View {
                 
                 // MARK: - Account
                 Section("Account") {
-                    Button {
-                        onSignOutPressed()
-                    } label: {
-                        Text("Sign out")
-                            .foregroundStyle(.red)
+                    if isAnonymousUser {
+                        Button {
+                            onCreateAccauntPressed()
+                        } label: {
+                            Text("Log in")
+                                .foregroundStyle(.blue)
+                        }
+                    } else {
+                        Button {
+                            onSignOutPressed()
+                        } label: {
+                            Text("Log out")
+                                .foregroundStyle(.red)
+                        }
                     }
+                    
                 }
             }
             .navigationTitle("Settings")
+            .sheet(isPresented: $showCreateAccountView) {
+                CreateAccountView()
+                    .presentationDetents([.medium])
+            }
         }
     }
     
@@ -50,9 +66,14 @@ struct SettingsView: View {
             appState.updateViewState(showTabBarView: false)
         }
     }
+    
+    private func onCreateAccauntPressed() {
+        showCreateAccountView = true
+    }
 }
 
 #Preview {
     SettingsView()
         .environment(AppState())
+        .preferredColorScheme(.dark)
 }
