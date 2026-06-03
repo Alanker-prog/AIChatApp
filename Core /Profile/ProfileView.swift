@@ -47,7 +47,7 @@ struct ProfileView: View {
         VStack(spacing: 8) {
             ZStack {
                 Circle()
-                    .fill(currentUser?.profileColorCalculated ?? .blue)
+                    .fill(currentUser?.profileColor ?? .blue)
                     .frame(width: 80, height: 80)
                 
                 if currentUser?.profileImageURL == nil {
@@ -69,7 +69,7 @@ struct ProfileView: View {
     private var accountSection: some View {
         Section("Account") {
             NavigationLink {
-                Text("Screen Edit Profile")
+                EditProfileView()
             } label: {
                 Label("Edit Profile", systemImage: "person")
             }
