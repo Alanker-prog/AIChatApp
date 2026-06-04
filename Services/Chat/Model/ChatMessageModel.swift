@@ -7,26 +7,38 @@
 
 import Foundation
 
+// MARK: - Message Status
+
+enum MessageStatus: String, Hashable {
+    case sending    // уходит на сервер
+    case sent       // успешно доставлено
+    case failed     // ошибка отправки — показываем "повторить"
+}
+
+// MARK: - Chat Message Model
+
 struct ChatMessageModel: Identifiable, Hashable {
-    
+
     let id: String
     let chatID: String
     let authorID: String?      // nil = сообщение от AI
-    let content: AIOutput?
+    let content: AIOutput
     let seenByIDs: [String]?
     let createdAt: Date
-    
+    let status: MessageStatus
+
     var isAIMessage: Bool {
         authorID == nil
     }
-    
+
     func hasBeenSeenBy(userId: String) -> Bool {
         guard let seenByIDs else { return false }
         return seenByIDs.contains(userId)
     }
 }
 
-// MARK: - AIOutput Это контейнер, в котором можно хранить и текст, и изображение одновременно:
+// MARK: - AIOutput
+// Контейнер контента сообщения: может хранить текст, изображение или и то и другое.
 
 struct AIOutput: Hashable {
     let text: String?
@@ -36,7 +48,7 @@ struct AIOutput: Hashable {
 // MARK: - Mocks
 
 extension ChatMessageModel {
-    
+
     static let mocks: [ChatMessageModel] = [
         ChatMessageModel(
             id: "mock_message_1",
@@ -47,7 +59,8 @@ extension ChatMessageModel {
                 imageURL: nil
             ),
             seenByIDs: ["user_1"],
-            createdAt: .now
+            createdAt: .now,
+            status: .sent
         ),
         ChatMessageModel(
             id: "mock_message_2",
@@ -58,7 +71,8 @@ extension ChatMessageModel {
                 imageURL: nil
             ),
             seenByIDs: ["user_1"],
-            createdAt: .now
+            createdAt: .now,
+            status: .sent
         ),
         ChatMessageModel(
             id: "mock_message_3",
@@ -69,7 +83,8 @@ extension ChatMessageModel {
                 imageURL: nil
             ),
             seenByIDs: ["user_1"],
-            createdAt: .now
+            createdAt: .now,
+            status: .sent
         ),
         ChatMessageModel(
             id: "mock_message_4",
@@ -80,9 +95,10 @@ extension ChatMessageModel {
                 imageURL: Constants.randomeImage
             ),
             seenByIDs: ["user_1"],
-            createdAt: .now
+            createdAt: .now,
+            status: .sent
         )
     ]
-    
+
     static let mock: ChatMessageModel = mocks[0]
 }
