@@ -97,6 +97,19 @@ extension ChatMessageModel {
             seenByIDs: ["user_1"],
             createdAt: .now,
             status: .sent
+        ),
+        // проваленное сообщение — показываем кнопку "повторить"
+        ChatMessageModel(
+            id: "mock_message_5",
+            chatID: "mock_chat_1",
+            authorID: "user_1",              // моё сообщение, которое не отправилось
+            content: AIOutput(
+                text: "This message failed to send",
+                imageURL: nil
+            ),
+            seenByIDs: nil,
+            createdAt: .now,
+            status: .failed                  // 👈 упавшее
         )
     ]
 
