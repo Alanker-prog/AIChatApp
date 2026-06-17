@@ -21,7 +21,7 @@ struct ChatRowCellViewBuilder: View {
         ChatRowCellView(
             imageName: avatar?.profileImageURL,
             headline: avatar?.name,
-            subheadline: lastChatMessage?.content?.text,
+            subheadline: lastChatMessage?.content.text,
             hasNewMessage: hasNewChat
         )
         .task {

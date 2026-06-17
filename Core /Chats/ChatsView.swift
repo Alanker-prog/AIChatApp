@@ -8,33 +8,40 @@
 import SwiftUI
 
 struct ChatsView: View {
-    
+
     @State private var chats: [ChatModel] = ChatModel.mocks
-    
+    @State private var path: [ChatModel] = []   // стек навигации
+
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             List {
                 ForEach(chats) { chat in
                     ChatRowCellViewBuilder(
                         currentUserId: chat.userID,
                         chat: chat,
                         getAvatar: {
-                            return.mock
+                            return .mock
                         },
                         getLastChatMessage: {
-                            return.mock
-                            
+                            return .mock
                         }
                     )
                     .anyButton(.highlight) {
-                        // action
+                        onChatPressed(chat)
                     }
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
             }
             .navigationTitle("Chats")
             .listStyle(.plain)
+            .navigationDestination(for: ChatModel.self) { chat in
+                ChatView(chat: chat)
+            }
         }
+    }
+
+    private func onChatPressed(_ chat: ChatModel) {
+        path.append(chat)
     }
 }
 
