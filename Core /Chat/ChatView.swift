@@ -18,21 +18,34 @@ struct ChatView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            ScrollView {
-                LazyVStack(spacing: 24) {
-                    ForEach(chatMessages) { message in
-                        ChatBubbleView(message: message) {
-                            onRetryPressed(message)
+            ScrollViewReader(content: { proxi in
+                ScrollView {
+                    LazyVStack(spacing: 8) {
+                        ForEach(chatMessages) { message in
+                            ChatBubbleView(message: message) {
+                                onRetryPressed(message)
+                            }
+                            .id(message.id)
                         }
                     }
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal, horizontalPadding)
                 }
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, horizontalPadding)
-            }
+                .padding(.bottom, 14)
+                .defaultScrollAnchor(.bottom)
+                .onChange(of: chatMessages.count) {
+                    scrollToBottom(proxi: proxi)
+                }
+                .onAppear {
+                    scrollToBottom(proxi: proxi)
+                }
+            })
+            
             textFieldSection
         }
         .navigationTitle("Chat")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarVisibility(.hidden, for: .tabBar)
         .onAppear {
             loadMessages()
         }
@@ -65,6 +78,15 @@ struct ChatView: View {
         chatMessages.append(message)
         textFieldText = ""
         }
+    
+    private func scrollToBottom(proxi: ScrollViewProxy) {
+        guard let lastMessage = chatMessages.last else { return }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            withAnimation(.easeOut(duration: 0.25)) {
+                proxi.scrollTo(lastMessage.id, anchor: .bottom)
+            }
+        }
+    }
     
     private var textFieldSection: some View {
         TextField("Message", text: $textFieldText, axis: .vertical)
