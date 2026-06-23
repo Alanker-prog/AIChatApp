@@ -35,7 +35,7 @@ struct ChatsView: View {
             .navigationTitle("Chats")
             .listStyle(.plain)
             .navigationDestination(for: ChatModel.self) { chat in
-                ChatView(chat: chat)
+                ChatView(chat: chat, avatar: .mock)
             }
         }
     }

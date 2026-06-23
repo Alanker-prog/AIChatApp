@@ -9,7 +9,8 @@ import SwiftUI
 
 struct ChatView: View {
 
-    let chat: ChatModel   // 👈 какой чат открыли
+    let chat: ChatModel    // 👈 какой чат открыли
+    let avatar: AvatarModel  // 👈 Фото и Ник собеседника этого чата
     private let fieldCornerRadius: CGFloat = 30
     private let horizontalPadding: CGFloat = 12
 
@@ -43,7 +44,18 @@ struct ChatView: View {
             
             textFieldSection
         }
-        .navigationTitle("Chat")
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                HStack(spacing: 8) {
+                    Text(avatar.name)
+                    AvatarView(
+                        imageURL: avatar.profileImageURL,
+                        fallbackText: String(avatar.name.first ?? "?"),
+                        size: 42
+                    )
+                }
+            }
+        }
         .navigationBarTitleDisplayMode(.inline)
         .toolbarVisibility(.hidden, for: .tabBar)
         .onAppear {
@@ -118,7 +130,7 @@ struct ChatView: View {
 
 #Preview {
     NavigationStack {
-        ChatView(chat: .mock)
+        ChatView(chat: .mock, avatar: .mock)
     }
     .preferredColorScheme(.dark)
 }
