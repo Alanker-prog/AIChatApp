@@ -10,7 +10,7 @@ import SwiftUI
 struct ChatBubbleView: View {
 
     let message: ChatMessageModel
-    var onRetryPressed: (() -> Void)? = nil
+    var onRetryPressed: (() -> Void)?
 
     var body: some View {
         // Выравнивание зависит от автора: мои сообщения справа, AI — слева.
@@ -56,18 +56,11 @@ struct ChatBubbleView: View {
         }
 
         if let imageURL = message.content.imageURL {
-            AsyncImage(url: URL(string: imageURL)) { image in
-                image
-                    .resizable()
-                    .scaledToFill()
-            } placeholder: {
-                ProgressView()
-                    .frame(height: 180)
+            ImageLoaderView(urlString: imageURL)
+                .frame(width: 240, height: 240) 
+                .clipShape(RoundedRectangle(cornerRadius: 12))
             }
-            .frame(maxWidth: 240, maxHeight: 240)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
         }
-    }
     
     private var bubbleColor: Color {
         message.isAIMessage ? Color(.secondarySystemBackground) : .blue
