@@ -46,13 +46,15 @@ struct ChatView: View {
         }
         .toolbar {
             ToolbarItem(placement: .principal) {
-                HStack(spacing: 8) {
-                    Text(avatar.name)
-                    AvatarView(
-                        imageURL: avatar.profileImageURL,
-                        fallbackText: String(avatar.name.first ?? "?"),
-                        size: 42
-                    )
+                NavigationLink( value: avatar) {
+                    HStack(spacing: 8) {
+                        Text(avatar.name)
+                        AvatarView(
+                            imageURL: avatar.profileImageURL,
+                            fallbackText: String(avatar.name.first ?? "?"),
+                            size: 42
+                        )
+                    }
                 }
             }
         }

@@ -10,7 +10,7 @@ import SwiftUI
 struct ChatsView: View {
 
     @State private var chats: [ChatModel] = ChatModel.mocks
-    @State private var path: [ChatModel] = []   // стек навигации
+    @State private var path = NavigationPath()   // стек навигации
 
     var body: some View {
         NavigationStack(path: $path) {
@@ -37,6 +37,9 @@ struct ChatsView: View {
             .navigationDestination(for: ChatModel.self) { chat in
                 ChatView(chat: chat, avatar: .mock)
             }
+            .navigationDestination(for: AvatarModel.self, destination: { avatar in
+                AvatarProfileView(avatar: avatar)
+            })
         }
     }
 
