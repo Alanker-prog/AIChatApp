@@ -70,7 +70,7 @@ extension AvatarModel {
     
     static let mocks: [AvatarModel] = [
         AvatarModel(
-            id: "1",
+            id: "avatar_1",
             name: "Alfa",
             character: Character(option: .alien, action: .dancing, location: .space),
             profileImageURL: Constants.randomeImage,
@@ -78,7 +78,7 @@ extension AvatarModel {
             createdAt: .now
         ),
         AvatarModel(
-            id: "2",
+            id: "avatar_2",
             name: "Beta",
             character: Character(option: .dog, action: .sitting, location: .park),
             profileImageURL: Constants.randomeImage,
@@ -86,7 +86,7 @@ extension AvatarModel {
             createdAt: .now
         ),
         AvatarModel(
-            id: "3",
+            id: "avatar_3",
             name: "Gamma",
             character: Character(option: .cat, action: .sleeping, location: .museum),
             profileImageURL: Constants.randomeImage,
@@ -94,7 +94,7 @@ extension AvatarModel {
             createdAt: .now
         ),
         AvatarModel(
-            id: "4",
+            id: "avatar_4",
             name: "Delta",
             character: Character(option: .woman, action: .eating, location: .mall),
             profileImageURL: Constants.randomeImage,
