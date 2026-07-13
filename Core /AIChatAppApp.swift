@@ -10,14 +10,16 @@ import FirebaseCore
 
 @main
 struct AIChatAppApp: App {
-    
+
     @State private var appState = AppState()
+    @State private var authManager = AuthManager(service: FirebaseAuthService())  // 👈
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    
+
     var body: some Scene {
         WindowGroup {
             AppView()
                 .environment(appState)
+                .environment(authManager)          // 👈 прокидываем менеджер
                 .preferredColorScheme(appState.isDarkMode ? .dark : .light)
         }
     }

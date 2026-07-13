@@ -10,6 +10,7 @@ import SwiftUI
 struct AppView: View {
     
     @State var appState: AppState = AppState()
+    @State private var authManager = AuthManager(service: FirebaseAuthService())
     
     var body: some View {
         AppViewBuilder(
@@ -22,6 +23,19 @@ struct AppView: View {
             }
         )
         .environment(appState)
+        .environment(authManager)
+        .task {
+            await signInIfNeeded()
+        }
+    }
+    
+    private func signInIfNeeded() async {
+        do {
+            try await authManager.signInAnonymouslyIfNeeded()
+            print("Signed in! UID: \(authManager.currentUser?.uid ?? "none")")
+        } catch {
+            print("Sign in failed: \(error)")
+        }
     }
 }
 #Preview("AppView - Tabbar") {
