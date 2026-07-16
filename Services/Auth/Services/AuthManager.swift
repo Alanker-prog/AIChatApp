@@ -42,4 +42,21 @@ class AuthManager {
         let user = try await service.signInAnonymously()
         currentUser = user
     }
+    
+    // Готовые менеджеры с заданным состоянием для превью/тестов.
+    // НЕ использовать в проде — там AuthManager(service: FirebaseAuthService()).
+#if DEBUG
+    static var mockSignedIn: AuthManager {
+        let manager = AuthManager(service: MockAuthService())
+        manager.currentUser = .mock(isAnonymous: false)
+        return manager
+    }
+
+    static var mockAnonymous: AuthManager {
+        let manager = AuthManager(service: MockAuthService())
+        manager.currentUser = .mock(isAnonymous: true)
+        return manager
+    }
+#endif
 }
+

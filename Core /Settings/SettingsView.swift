@@ -11,8 +11,11 @@ struct SettingsView: View {
     
     @Environment(\.dismiss) private var dismiss
     @Environment(AppState.self) private var appState
-    @State private var isAnonymousUser: Bool = true
+    @Environment(AuthManager.self) private var authManager
     @State private var showCreateAccountView: Bool = false
+    private var isAnonymousUser: Bool {
+        authManager.currentUser?.isAnonymous ?? true
+    }
     
     var body: some View {
         NavigationStack {
@@ -60,11 +63,17 @@ struct SettingsView: View {
     // MARK: - Actions
     
     private func onSignOutPressed() {
-        dismiss()
-        Task {
-            try? await Task.sleep(for: .seconds(0.3))
-            appState.updateViewState(showTabBarView: false)
+        do {
+            try authManager.signOut()
+            dismiss()
+            Task {
+                try? await Task.sleep(for: .seconds(0.3))
+                appState.updateViewState(showTabBarView: false)
+            }
+        } catch {
+            print("Sign out failed \(error)")
         }
+        
     }
     
     private func onCreateAccauntPressed() {
@@ -72,8 +81,16 @@ struct SettingsView: View {
     }
 }
 
-#Preview {
+#Preview("Anonymous") {
     SettingsView()
         .environment(AppState())
+        .environment(AuthManager.mockAnonymous)
+        .preferredColorScheme(.dark)
+}
+
+#Preview("Authenticated") {
+    SettingsView()
+        .environment(AppState())
+        .environment(AuthManager.mockSignedIn)
         .preferredColorScheme(.dark)
 }
