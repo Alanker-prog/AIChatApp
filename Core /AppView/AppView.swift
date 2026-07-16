@@ -10,7 +10,7 @@ import SwiftUI
 struct AppView: View {
     
     @State var appState: AppState = AppState()
-    @State private var authManager = AuthManager(service: FirebaseAuthService())
+    @State var authManager = AuthManager(service: FirebaseAuthService())
     
     var body: some View {
         AppViewBuilder(
@@ -39,8 +39,15 @@ struct AppView: View {
     }
 }
 #Preview("AppView - Tabbar") {
-    AppView(appState: AppState(showTabBar: true))
+    AppView(
+        appState: AppState(showTabBar: true),
+        authManager: AuthManager(service: MockAuthService())
+    )
+    
 }
 #Preview("AppView - Onboarding") {
-    AppView(appState: AppState(showTabBar: false))
+    AppView(
+        appState: AppState(showTabBar: false),
+        authManager: AuthManager(service: MockAuthService())
+    )
 }
