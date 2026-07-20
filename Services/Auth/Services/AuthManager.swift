@@ -59,4 +59,3 @@ class AuthManager {
     }
 #endif
 }
-

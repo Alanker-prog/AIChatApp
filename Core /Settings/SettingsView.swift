@@ -63,17 +63,15 @@ struct SettingsView: View {
     // MARK: - Actions
     
     private func onSignOutPressed() {
-        do {
-            try authManager.signOut()
-            dismiss()
-            Task {
-                try? await Task.sleep(for: .seconds(0.3))
-                appState.updateViewState(showTabBarView: false)
+        Task {
+            do {
+                try authManager.signOut()              
+                try await authManager.signInAnonymouslyIfNeeded()
+                dismiss()
+            } catch {
+                print("Sign out failed: \(error)")
             }
-        } catch {
-            print("Sign out failed \(error)")
         }
-        
     }
     
     private func onCreateAccauntPressed() {
