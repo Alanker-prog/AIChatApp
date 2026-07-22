@@ -11,4 +11,5 @@ protocol AuthServiceProtocol: Sendable {
     func getAuthenticatedUser() -> UserAuthInfo?
     func signInAnonymously() async throws -> UserAuthInfo
     func signOut() throws
+    func authStateStream() -> AsyncStream<UserAuthInfo?>
 }

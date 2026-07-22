@@ -17,7 +17,20 @@ class AuthManager {
     init(service: AuthServiceProtocol) {
         self.service = service
     }
-
+    
+    private func listenToAuthState() async {
+        for await user in service.authStateStream() {
+            currentUser = user
+            print("Auth state changed! UID: \(user?.uid ?? "nil")")
+        }
+    }
+    
+    func startListening() {
+        Task {
+            await listenToAuthState()
+        }
+    }
+    
     func signInAnonymously() async throws {
         if let user = service.getAuthenticatedUser() {
             currentUser = user
@@ -29,20 +42,15 @@ class AuthManager {
 
     func signOut() throws {
         try service.signOut()
-        currentUser = nil
     }
     
     func signInAnonymouslyIfNeeded() async throws {
-        // если пользователь уже есть — ничего не делаем
-        if let user = service.getAuthenticatedUser() {
-            currentUser = user
+        if service.getAuthenticatedUser() != nil {
             return
         }
-        // иначе — создаём анонимного
-        let user = try await service.signInAnonymously()
-        currentUser = user
+        _ = try await service.signInAnonymously()
     }
-    
+
     // Готовые менеджеры с заданным состоянием для превью/тестов.
     // НЕ использовать в проде — там AuthManager(service: FirebaseAuthService()).
 #if DEBUG

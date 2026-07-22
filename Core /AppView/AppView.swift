@@ -25,6 +25,7 @@ struct AppView: View {
         .environment(appState)
         .environment(authManager)
         .task {
+            authManager.startListening() 
             await signInIfNeeded()
         }
     }
@@ -32,7 +33,6 @@ struct AppView: View {
     private func signInIfNeeded() async {
         do {
             try await authManager.signInAnonymouslyIfNeeded()
-            print("Signed in! UID: \(authManager.currentUser?.uid ?? "none")")
         } catch {
             print("Sign in failed: \(error)")
         }

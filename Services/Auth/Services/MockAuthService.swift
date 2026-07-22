@@ -8,6 +8,13 @@
 import Foundation
 
 struct MockAuthService: AuthServiceProtocol {
+    
+    func authStateStream() -> AsyncStream<UserAuthInfo?> {
+        AsyncStream { continuation in
+            continuation.yield(currentUser)   
+            continuation.finish()
+        }
+    }
 
     let currentUser: UserAuthInfo?
 
