@@ -11,6 +11,7 @@ struct AppView: View {
     
     @State var appState: AppState = AppState()
     @State var authManager = AuthManager(service: FirebaseAuthService())
+    @State var userManager = UserManager(service: FirestoreUserService())
     
     var body: some View {
         AppViewBuilder(
@@ -24,6 +25,8 @@ struct AppView: View {
         )
         .environment(appState)
         .environment(authManager)
+        .environment(userManager)
+        .preferredColorScheme(appState.isDarkMode ? .dark : .light)
         .task {
             authManager.startListening() 
             await signInIfNeeded()
@@ -32,7 +35,11 @@ struct AppView: View {
     
     private func signInIfNeeded() async {
         do {
-            try await authManager.signInAnonymouslyIfNeeded()
+            let auth = try await authManager.signInAnonymouslyIfNeeded()
+            
+            try await userManager.loadOrCreateUser(auth: auth)
+            print("User profile loaded: \(userManager.currentUser?.userID ?? "none")")
+            
         } catch {
             print("Sign in failed: \(error)")
         }
@@ -41,13 +48,15 @@ struct AppView: View {
 #Preview("AppView - Tabbar") {
     AppView(
         appState: AppState(showTabBar: true),
-        authManager: AuthManager(service: MockAuthService())
+        authManager: AuthManager(service: MockAuthService()),
+        userManager: UserManager(service: MockUserService())
     )
     
 }
 #Preview("AppView - Onboarding") {
     AppView(
         appState: AppState(showTabBar: false),
-        authManager: AuthManager(service: MockAuthService())
+        authManager: AuthManager(service: MockAuthService()),
+        userManager: UserManager(service: MockUserService())
     )
 }

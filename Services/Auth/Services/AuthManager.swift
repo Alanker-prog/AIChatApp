@@ -13,6 +13,7 @@ class AuthManager {
 
     private let service: AuthServiceProtocol
     private(set) var currentUser: UserAuthInfo?
+    private var listenerTask: Task<Void, Never>?
 
     init(service: AuthServiceProtocol) {
         self.service = service
@@ -26,7 +27,8 @@ class AuthManager {
     }
     
     func startListening() {
-        Task {
+        guard listenerTask == nil else { return }
+        listenerTask = Task {
             await listenToAuthState()
         }
     }
@@ -44,11 +46,11 @@ class AuthManager {
         try service.signOut()
     }
     
-    func signInAnonymouslyIfNeeded() async throws {
-        if service.getAuthenticatedUser() != nil {
-            return
+    func signInAnonymouslyIfNeeded() async throws -> UserAuthInfo {
+        if let existingUser = service.getAuthenticatedUser() {
+            return existingUser
         }
-        _ = try await service.signInAnonymously()
+        return try await service.signInAnonymously()
     }
 
     // Готовые менеджеры с заданным состоянием для превью/тестов.
