@@ -22,7 +22,6 @@ class AuthManager {
     private func listenToAuthState() async {
         for await user in service.authStateStream() {
             currentUser = user
-            print("Auth state changed! UID: \(user?.uid ?? "nil")")
         }
     }
     

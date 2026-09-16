@@ -90,6 +90,20 @@ extension UserModel {
         return Color(hex: hex)
     }
     
+    func updatingDisplayName(_ newValue: String) -> UserModel {
+        UserModel(
+            userID: userID,
+            isAnonymous: isAnonymous,
+            email: email,
+            creationDate: creationDate,
+            lastSignInDate: lastSignInDate,
+            didCompleteOnboarding: didCompleteOnboarding,
+            profileImageURL: profileImageURL,
+            profileColorHex: profileColorHex,
+            displayName: newValue
+        )
+    }
+    
     static let mock = UserModel(
         userID: "mock_user_1",
         isAnonymous: true,

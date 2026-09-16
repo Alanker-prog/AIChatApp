@@ -9,9 +9,13 @@ import SwiftUI
 
 struct ProfileView: View {
     
+    @Environment(UserManager.self) private var userManager
     @State var showSettingsView: Bool = false
-    @State private var currentUser: UserModel? = .mock
     @State private var isPremium: Bool = false
+    
+    private var currentUser: UserModel? {
+        userManager.currentUser
+    }
     
     var body: some View {
         NavigationStack {
@@ -46,21 +50,17 @@ struct ProfileView: View {
     private var profileImageSection: some View {
         VStack(spacing: 8) {
             ZStack {
-                Circle()
-                    .fill(currentUser?.profileColor ?? .blue)
-                    .frame(width: 80, height: 80)
-                
-                if currentUser?.profileImageURL == nil {
-                    Text("АП")
-                        .foregroundStyle(.white)
-                        .font(.headline)
-                }
+                AvatarView(
+                    imageURL: currentUser?.profileImageURL,
+                    fallbackText: nil,
+                    fallbackIcon: "person.fill",
+                    size: 80,
+                    backgroundColor: currentUser?.profileColor ?? .blue
+                )
             }
             
-            if let currentUser {
-                Text(currentUser.userID)
-                    .font(.headline)
-            }
+            Text(currentUser?.displayName ?? "Guest User")
+                .font(.headline)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 24)
@@ -111,4 +111,5 @@ struct ProfileView: View {
     ProfileView()
         .preferredColorScheme(.dark)
         .environment(AppState())
+        .environment(UserManager(service: MockUserService(), currentUser: .mock))
 }

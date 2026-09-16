@@ -11,7 +11,9 @@ struct AvatarView: View {
 
     let imageURL: String?
     let fallbackText: String?
+    var fallbackIcon: String? = nil
     var size: CGFloat = 40
+    var backgroundColor: Color = .gray.opacity(0.3)
 
     var body: some View {
         Group {
@@ -24,14 +26,21 @@ struct AvatarView: View {
         .frame(width: size, height: size)
         .clipShape(Circle())
     }
-
+    
     private var placeholderCircle: some View {
         Circle()
-            .fill(.gray.opacity(0.3))
+            .fill(backgroundColor)
             .overlay {
-                Text(fallbackText ?? "?")
-                    .font(.system(size: size * 0.4))
-                    .foregroundStyle(.secondary)
+                if let fallbackIcon {
+                    Image(systemName: fallbackIcon)
+                        .foregroundStyle(.white)
+                        .font(.system(size: size * 0.4))
+                } else {
+                    Text(fallbackText ?? "?")
+                        .foregroundStyle(.secondary)
+                        .font(.system(size: size * 0.4))
+                }
+                
             }
     }
 }

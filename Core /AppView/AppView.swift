@@ -13,6 +13,8 @@ struct AppView: View {
     @State var authManager = AuthManager(service: FirebaseAuthService())
     @State var userManager = UserManager(service: FirestoreUserService())
     
+    @State private var didStart = false
+    
     var body: some View {
         AppViewBuilder(
             showTabbar: appState.showTabBar,
@@ -28,7 +30,9 @@ struct AppView: View {
         .environment(userManager)
         .preferredColorScheme(appState.isDarkMode ? .dark : .light)
         .task {
-            authManager.startListening() 
+            guard !didStart else { return }
+            didStart = true
+            authManager.startListening()
             await signInIfNeeded()
         }
     }
@@ -36,10 +40,7 @@ struct AppView: View {
     private func signInIfNeeded() async {
         do {
             let auth = try await authManager.signInAnonymouslyIfNeeded()
-            
             try await userManager.loadOrCreateUser(auth: auth)
-            print("User profile loaded: \(userManager.currentUser?.userID ?? "none")")
-            
         } catch {
             print("Sign in failed: \(error)")
         }

@@ -30,4 +30,27 @@ struct FirestoreUserService: UserServiceProtocol {
         try await collection.document(userID).delete()
     }
 
+    func userStateStream(userID: String) -> AsyncThrowingStream<UserModel?, Error> {
+        AsyncThrowingStream { continuation in
+            
+            let task = Task {
+                do {
+                    for try await snapshot in collection.document(userID).snapshots {
+                        if snapshot.exists {
+                            let user = try snapshot.data(as: UserModel.self)
+                            continuation.yield(user)
+                        } else {
+                            continuation.yield(nil)
+                        }
+                    }
+                    continuation.finish()
+                } catch {
+                    continuation.finish(throwing: error)
+                }
+            }
+            continuation.onTermination = { @Sendable _ in
+                task.cancel()
+            }
+        }
+    }
 }
