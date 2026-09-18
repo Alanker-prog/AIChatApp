@@ -71,3 +71,11 @@ class UserManager {
         }
     }
 }
+
+#if DEBUG
+extension UserManager {
+    static var mock: UserManager {
+        UserManager(service: MockUserService(), currentUser: .mock)
+    }
+}
+#endif
