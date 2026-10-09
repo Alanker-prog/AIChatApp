@@ -10,7 +10,7 @@ import SwiftUI
 struct ExploreView: View {
     
     @State private var featuredAvatars: [AvatarModel] = AvatarModel.mocks
-    @State private var categories: [CharacterOption] = CharacterOption.allCases
+    @State private var categories: [AvatarCategory] = AvatarCategory.allCases
     @State private var popularAvatars: [AvatarModel] = AvatarModel.mocks
     
     var body: some View {
@@ -37,7 +37,7 @@ struct ExploreView: View {
             CarouselView(items: featuredAvatars) { avatar in
                 HeroCellView(
                     title: avatar.name,
-                    subtitle: avatar.description,
+                    subtitle: avatar.characterDescription,
                     imageName: avatar.profileImageURL
                 )
                 .anyButton(.plain) {
@@ -58,7 +58,7 @@ struct ExploreView: View {
                     ForEach(categories, id: \.self) { category in
                         CategoryCellView(
                             title: category.rawValue.capitalized,
-                            imageName: Constants.randomeImage,
+                            imageName: Constants.randomeImage
                         )
                         .anyButton(.plain) {
                             
@@ -81,11 +81,11 @@ struct ExploreView: View {
 
             VStack(spacing: 8) {
 
-                ForEach(featuredAvatars) { avatar in
+                ForEach(popularAvatars) { avatar in
                     PopularCellView(
                         imageName: avatar.profileImageURL,
                         title: avatar.name,
-                        subtitle: avatar.description
+                        subtitle: avatar.characterDescription
                     )
                     .anyButton(.highlight) {
                         
