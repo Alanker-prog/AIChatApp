@@ -62,8 +62,8 @@ struct CarouselView<T: Identifiable, Content: View>: View {
     CarouselView(items: AvatarModel.mocks) { item in
         HeroCellView(
             title: item.name,
-            subtitle: item.description,
-            imageName: item.profileImageURL 
+            subtitle: item.characterDescription,
+            imageName: item.profileImageURL
         )
     }
         .padding()

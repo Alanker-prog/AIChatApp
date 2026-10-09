@@ -11,29 +11,17 @@ struct AvatarModel: Identifiable, Hashable {
     
     let id: String
     let name: String
-    let character: Character
+    let category: AvatarCategory
     let profileImageURL: String?
     let authorID: String
     let createdAt: Date
-    
-    // MARK: - Derived
-    
-    var description: String {
-        "\(character.option.rawValue) is \(character.action.rawValue) in the \(character.location.rawValue)"
-    }
+    let characterDescription: String
 }
 
-// MARK: - Character
-
-struct Character: Hashable {
-    let option: CharacterOption
-    let action: CharacterAction
-    let location: CharacterLocation
-}
 
 // MARK: - Enums
 
-enum CharacterOption: String, Hashable, CaseIterable {
+enum AvatarCategory: String, Hashable, CaseIterable {
     case man
     case woman
     case alien
@@ -41,28 +29,6 @@ enum CharacterOption: String, Hashable, CaseIterable {
     case cat
 }
 
-enum CharacterAction: String, CaseIterable {
-    case smiling
-    case sitting
-    case eating
-    case drinking
-    case walking
-    case shopping
-    case studying
-    case dancing
-    case crying
-    case sleeping
-}
-
-enum CharacterLocation: String, CaseIterable {
-    case park
-    case mall
-    case museum
-    case city
-    case desert
-    case forest
-    case space
-}
 
 // MARK: - Mocks
 
@@ -72,34 +38,38 @@ extension AvatarModel {
         AvatarModel(
             id: "avatar_1",
             name: "Alfa",
-            character: Character(option: .alien, action: .dancing, location: .space),
+            category: .alien,
             profileImageURL: Constants.randomeImage,
             authorID: "user_1",
-            createdAt: .now
+            createdAt: .now,
+            characterDescription: "A green alien dancing among the stars"
         ),
         AvatarModel(
             id: "avatar_2",
             name: "Beta",
-            character: Character(option: .dog, action: .sitting, location: .park),
+            category: .dog,
             profileImageURL: Constants.randomeImage,
             authorID: "user_2",
-            createdAt: .now
+            createdAt: .now,
+            characterDescription: "A dog is running and barking in the yard"
         ),
         AvatarModel(
             id: "avatar_3",
             name: "Gamma",
-            character: Character(option: .cat, action: .sleeping, location: .museum),
+            category: .cat,
             profileImageURL: Constants.randomeImage,
             authorID: "user_3",
-            createdAt: .now
+            createdAt: .now,
+            characterDescription: "A cat sleeps in the sun in the garden"
         ),
         AvatarModel(
             id: "avatar_4",
             name: "Delta",
-            character: Character(option: .woman, action: .eating, location: .mall),
+            category: .woman,
             profileImageURL: Constants.randomeImage,
             authorID: "user_4",
-            createdAt: .now
+            createdAt: .now,
+            characterDescription: "A woman eats chocolate ice cream in a park"
         )
     ]
     

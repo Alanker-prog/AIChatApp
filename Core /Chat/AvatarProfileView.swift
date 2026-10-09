@@ -27,7 +27,6 @@ struct AvatarProfileView: View {
                         Text(avatar.name)
                             .font(.title)
                             .fontWeight(.bold)
-                        Text(avatar.description)
                     }
                     .foregroundStyle(.white)
                     .padding()
@@ -38,10 +37,9 @@ struct AvatarProfileView: View {
 
             Section("Information") {
                 LabeledContent("Name", value: avatar.name)
-                LabeledContent("Type", value: avatar.character.option.rawValue)
-                LabeledContent("Action", value: avatar.character.action.rawValue)
-                LabeledContent("Location", value: avatar.character.location.rawValue)
+                LabeledContent("Description", value: avatar.characterDescription)
             }
+            .labeledContentStyle(VerticalLabeledContentStyle())
         }
         .listStyle(.plain)
         .ignoresSafeArea(edges: .top)
