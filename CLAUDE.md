@@ -32,10 +32,10 @@ This two-component pattern (generic builder + concrete wiring view) is the estab
 
 ### Feature Structure
 
-All feature screens live under `Core /` (note: folder name has a trailing space). Each feature gets its own subfolder:
+All feature screens live under `Core/`. Each feature gets its own subfolder:
 
 ```
-Core /
+Core/
   AppView/       — app shell (AppView + AppViewBuilder)
   TabBar/        — TabBarView (Explore / Chats / Profile tabs)
   Welcome/       — onboarding entry screen
