@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AvatarModel: Identifiable, Hashable {
+struct AvatarModel: Identifiable, Hashable, Codable {
     
     let id: String
     let name: String
@@ -18,10 +18,7 @@ struct AvatarModel: Identifiable, Hashable {
     let characterDescription: String
 }
 
-
-// MARK: - Enums
-
-enum AvatarCategory: String, Hashable, CaseIterable {
+enum AvatarCategory: String, Hashable, CaseIterable, Codable {
     case man
     case woman
     case alien
@@ -29,8 +26,17 @@ enum AvatarCategory: String, Hashable, CaseIterable {
     case cat
 }
 
-
-// MARK: - Mocks
+extension AvatarModel {
+    enum CodingKeys: String, CodingKey {
+        case id = "id"
+        case name = "name"
+        case category = "category"
+        case profileImageURL = "profile_image_url"
+        case authorID = "author_id"
+        case createdAt = "created_at"
+        case characterDescription = "character_description"
+    }
+}
 
 extension AvatarModel {
     
