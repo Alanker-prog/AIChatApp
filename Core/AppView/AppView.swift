@@ -12,6 +12,7 @@ struct AppView: View {
     @State var appState: AppState = AppState()
     @State var authManager = AuthManager(service: FirebaseAuthService())
     @State var userManager = UserManager(service: FirestoreUserService())
+    @State var avatarManager = AvatarManager(service: MockAvatarService())
     
     @State private var didStart = false
     
@@ -28,6 +29,7 @@ struct AppView: View {
         .environment(appState)
         .environment(authManager)
         .environment(userManager)
+        .environment(avatarManager)
         .preferredColorScheme(appState.isDarkMode ? .dark : .light)
         .task {
             guard !didStart else { return }
@@ -50,7 +52,8 @@ struct AppView: View {
     AppView(
         appState: AppState(showTabBar: true),
         authManager: AuthManager(service: MockAuthService()),
-        userManager: UserManager(service: MockUserService())
+        userManager: UserManager(service: MockUserService()),
+        avatarManager: AvatarManager(service: MockAvatarService())
     )
     
 }
@@ -58,6 +61,7 @@ struct AppView: View {
     AppView(
         appState: AppState(showTabBar: false),
         authManager: AuthManager(service: MockAuthService()),
-        userManager: UserManager(service: MockUserService())
+        userManager: UserManager(service: MockUserService()),
+        avatarManager: AvatarManager(service: MockAvatarService())
     )
 }

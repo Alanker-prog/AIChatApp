@@ -9,32 +9,48 @@ import SwiftUI
 
 struct ExploreView: View {
     
-    @State private var featuredAvatars: [AvatarModel] = AvatarModel.mocks
-    @State private var categories: [AvatarCategory] = AvatarCategory.allCases
-    @State private var popularAvatars: [AvatarModel] = AvatarModel.mocks
+    @Environment(AvatarManager.self) private var avatarManager
+    private let categories: [AvatarCategory] = AvatarCategory.allCases
+    @State private var isLoading: Bool = true
     
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 12) {
-                    featuredSection
-                    categoriesSection
-                    popularSection
+                    if isLoading {
+                        ProgressView()
+                            .frame(maxWidth: .infinity)
+                    } else {
+                        featuredSection
+                        categoriesSection
+                        popularSection
+                    }
                 }
                 .padding()
             }
             .navigationTitle("Explore")
+            .task {
+                await loadAvatars()
+            }
         }
-        
+    }
+    
+    private func loadAvatars() async {
+        do {
+            try await avatarManager.loadExploreAvatars()
+        } catch {
+            print("Failed to load avatars: \(error)")
+        }
+        isLoading = false
     }
     
     private var featuredSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text("Futured Avatar")
+            Text("Featured Avatars")
                 .font(.title2)
                 .bold()
             
-            CarouselView(items: featuredAvatars) { avatar in
+            CarouselView(items: avatarManager.featuredAvatars) { avatar in
                 HeroCellView(
                     title: avatar.name,
                     subtitle: avatar.characterDescription,
@@ -81,7 +97,7 @@ struct ExploreView: View {
 
             VStack(spacing: 8) {
 
-                ForEach(popularAvatars) { avatar in
+                ForEach(avatarManager.popularAvatars) { avatar in
                     PopularCellView(
                         imageName: avatar.profileImageURL,
                         title: avatar.name,
@@ -99,4 +115,5 @@ struct ExploreView: View {
 
 #Preview {
     ExploreView()
+        .environment(AvatarManager.mock)
 }
