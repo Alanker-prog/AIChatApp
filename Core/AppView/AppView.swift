@@ -12,7 +12,7 @@ struct AppView: View {
     @State var appState: AppState = AppState()
     @State var authManager = AuthManager(service: FirebaseAuthService())
     @State var userManager = UserManager(service: FirestoreUserService())
-    @State var avatarManager = AvatarManager(service: MockAvatarService())
+    @State var avatarManager = AvatarManager(service: FirestoreAvatarService())
     
     @State private var didStart = false
     
