@@ -25,6 +25,11 @@ class AvatarManager {
         
         (featuredAvatars, popularAvatars) = try await (featured, popular)
     }
+    
+    func saveAvatar(_ avatar: AvatarModel) async throws {
+        try await service.saveAvatar(avatar)
+        featuredAvatars.insert(avatar, at: 0)
+    }
 }
 
 #if DEBUG

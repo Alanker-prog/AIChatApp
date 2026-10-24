@@ -10,4 +10,5 @@ import Foundation
 protocol AvatarServiceProtocol: Sendable {
     func getFeaturedAvatars() async throws -> [AvatarModel]
     func getPopularAvatars() async throws -> [AvatarModel]
+    func saveAvatar(_ avatar: AvatarModel) async throws
 }
