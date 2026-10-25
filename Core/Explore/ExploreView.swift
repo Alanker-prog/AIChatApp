@@ -10,8 +10,11 @@ import SwiftUI
 struct ExploreView: View {
     
     @Environment(AvatarManager.self) private var avatarManager
-    private let categories: [AvatarCategory] = AvatarCategory.allCases
+    
+    @State private var showCreateAvatar: Bool = false
     @State private var isLoading: Bool = true
+    
+    private let categories: [AvatarCategory] = AvatarCategory.allCases
     
     var body: some View {
         NavigationStack {
@@ -31,6 +34,19 @@ struct ExploreView: View {
             .navigationTitle("Explore")
             .task {
                 await loadAvatars()
+            }
+            .sheet(isPresented: $showCreateAvatar, content: {
+                CreateAvatarView()
+            })
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showCreateAvatar = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+
+                }
             }
         }
     }
