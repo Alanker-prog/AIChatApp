@@ -12,7 +12,7 @@ struct AppView: View {
     @State var appState: AppState = AppState()
     @State var authManager = AuthManager(service: FirebaseAuthService())
     @State var userManager = UserManager(service: FirestoreUserService())
-    @State var avatarManager = AvatarManager(service: FirestoreAvatarService())
+    @State var avatarManager = AvatarManager(service: FirestoreAvatarService(), imageServiсe: FirebaseImageGenerationService())
     
     @State private var didStart = false
     
@@ -53,7 +53,7 @@ struct AppView: View {
         appState: AppState(showTabBar: true),
         authManager: AuthManager(service: MockAuthService()),
         userManager: UserManager(service: MockUserService()),
-        avatarManager: AvatarManager(service: MockAvatarService())
+        avatarManager: AvatarManager(service: MockAvatarService(), imageServiсe: MockImageGenerationService())
     )
     
 }
@@ -62,6 +62,5 @@ struct AppView: View {
         appState: AppState(showTabBar: false),
         authManager: AuthManager(service: MockAuthService()),
         userManager: UserManager(service: MockUserService()),
-        avatarManager: AvatarManager(service: MockAvatarService())
-    )
+        avatarManager: AvatarManager(service: MockAvatarService(), imageServiсe: MockImageGenerationService())    )
 }

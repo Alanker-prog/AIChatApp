@@ -71,6 +71,8 @@ struct CreateAvatarView: View {
             characterDescription: characterDescription.trimmingCharacters(in: .whitespaces)
         )
         do {
+            let imageResult = try await avatarManager.generateImage(description: avatar.characterDescription)
+            print("Image result: \(imageResult)")
             try await avatarManager.saveAvatar(avatar)
             dismiss()
         } catch {
