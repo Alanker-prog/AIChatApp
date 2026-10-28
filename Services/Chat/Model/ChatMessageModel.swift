@@ -92,7 +92,7 @@ extension ChatMessageModel {
             authorID: nil,               // AI отвечает картинкой
             content: AIOutput(
                 text: nil,
-                imageURL: Constants.randomeImage
+                imageURL: Constants.randomImage
             ),
             seenByIDs: ["user_1"],
             createdAt: .now,

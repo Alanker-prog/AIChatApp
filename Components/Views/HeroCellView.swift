@@ -11,7 +11,7 @@ struct HeroCellView: View {
     
     var title: String? = "Some Ttitle"
     var subtitle: String? = "We have a subtitle here."
-    var imageName: String? = Constants.randomeImage
+    var imageName: String? = Constants.randomImage
     
     var body: some View {
         ZStack {

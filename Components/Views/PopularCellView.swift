@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PopularCellView: View {
     
-    var imageName: String? = Constants.randomeImage
+    var imageName: String? = Constants.randomImage
     var title: String? = "Alfa"
     var subtitle: String? = "An alien that is smiling in the park"
     

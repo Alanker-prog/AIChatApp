@@ -90,7 +90,7 @@ struct ExploreView: View {
                     ForEach(categories, id: \.self) { category in
                         CategoryCellView(
                             title: category.rawValue.capitalized,
-                            imageName: Constants.randomeImage
+                            imageName: Constants.randomImage
                         )
                         .anyButton(.plain) {
                             

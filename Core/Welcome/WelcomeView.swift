@@ -8,7 +8,7 @@ import SwiftUI
 
 struct WelcomeView: View {
     
-    @State var imageName: String = Constants.randomeImage
+    @State var imageName: String = Constants.randomImage
     @State private var showSignInView: Bool = false
     
     var body: some View {

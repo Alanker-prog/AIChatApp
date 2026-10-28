@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ChatRowCellView: View {
     
-    var imageName: String? = Constants.randomeImage
+    var imageName: String? = Constants.randomImage
     var headline: String? = "Delta"
     var subheadline: String? = "This is the first message in the chat"
     var hasNewMessage: Bool = false

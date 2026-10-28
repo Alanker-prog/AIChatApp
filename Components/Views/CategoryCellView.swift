@@ -10,7 +10,7 @@ import SwiftUI
 struct CategoryCellView: View {
     
     var title: String = "Aliens"
-    var imageName: String = Constants.randomeImage
+    var imageName: String = Constants.randomImage
     var font: Font = .title2.bold()
     var cornerRadius: CGFloat = 16
     

@@ -45,7 +45,7 @@ extension AvatarModel {
             id: "avatar_1",
             name: "Alfa",
             category: .alien,
-            profileImageURL: Constants.randomeImage,
+            profileImageURL: Constants.randomImage,
             authorID: "user_1",
             createdAt: .now,
             characterDescription: "A green alien dancing among the stars"
@@ -54,7 +54,7 @@ extension AvatarModel {
             id: "avatar_2",
             name: "Beta",
             category: .dog,
-            profileImageURL: Constants.randomeImage,
+            profileImageURL: Constants.randomImage,
             authorID: "user_2",
             createdAt: .now,
             characterDescription: "A dog is running and barking in the yard"
@@ -63,7 +63,7 @@ extension AvatarModel {
             id: "avatar_3",
             name: "Gamma",
             category: .cat,
-            profileImageURL: Constants.randomeImage,
+            profileImageURL: Constants.randomImage,
             authorID: "user_3",
             createdAt: .now,
             characterDescription: "A cat sleeps in the sun in the garden"
@@ -72,7 +72,7 @@ extension AvatarModel {
             id: "avatar_4",
             name: "Delta",
             category: .woman,
-            profileImageURL: Constants.randomeImage,
+            profileImageURL: Constants.randomImage,
             authorID: "user_4",
             createdAt: .now,
             characterDescription: "A woman eats chocolate ice cream in a park"

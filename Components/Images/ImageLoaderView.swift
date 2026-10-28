@@ -10,7 +10,7 @@ import SDWebImageSwiftUI
 
 struct ImageLoaderView: View {
 
-    var urlString: String = Constants.randomeImage
+    var urlString: String = Constants.randomImage
     var resizingMode: ContentMode = .fill
     var useDrawingGroup: Bool = false   // 👈 опционально, по умолчанию выключен
 

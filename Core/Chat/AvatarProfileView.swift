@@ -13,7 +13,7 @@ struct AvatarProfileView: View {
     
     var body: some View {
         List {
-            ImageLoaderView(urlString: avatar.profileImageURL ?? Constants.randomeImage)
+            ImageLoaderView(urlString: avatar.profileImageURL ?? Constants.randomImage)
                 .overlay(alignment: .bottom) {
                     LinearGradient(
                         colors: [.black.opacity(0.6), .clear],
