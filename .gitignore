@@ -13,3 +13,4 @@ xcuserdata/
 
 # Firebase
 GoogleService-Info.plist
+node_modules/
