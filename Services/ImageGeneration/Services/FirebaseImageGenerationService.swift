@@ -11,7 +11,7 @@ private struct Request: Encodable {
 }
 
 private struct Response: Decodable {
-    let message: String
+    let imageURL: String
 }
 
 struct FirebaseImageGenerationService: ImageGenerationServiceProtocol {
@@ -19,7 +19,6 @@ struct FirebaseImageGenerationService: ImageGenerationServiceProtocol {
     func generateImage(description: String) async throws -> String {
         let callable = Functions.functions().httpsCallable("generateAvatarImage", requestAs: Request.self, responseAs: Response.self)
         let response = try await callable.call(Request(description: description))
-        return response.message
+        return response.imageURL
     }
 }
-

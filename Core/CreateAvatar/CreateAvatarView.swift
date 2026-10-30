@@ -61,18 +61,19 @@ struct CreateAvatarView: View {
     private func saveAvatar() async {
         guard let uid = authManager.currentUser?.uid else { return }
         isSaving = true
-        let avatar = AvatarModel(
-            id: UUID().uuidString,
-            name: name.trimmingCharacters(in: .whitespaces),
-            category: category,
-            profileImageURL: nil,
-            authorID: uid,
-            createdAt: .now,
-            characterDescription: characterDescription.trimmingCharacters(in: .whitespaces)
-        )
+        let description = characterDescription.trimmingCharacters(in: .whitespaces)
+        
         do {
-            let imageResult = try await avatarManager.generateImage(description: avatar.characterDescription)
-            print("Image result: \(imageResult)")
+            let imageURL = try await avatarManager.generateImage(description: description)
+            let avatar = AvatarModel(
+                id: UUID().uuidString,
+                name: name.trimmingCharacters(in: .whitespaces),
+                category: category,
+                profileImageURL: imageURL,
+                authorID: uid,
+                createdAt: .now,
+                characterDescription: description
+            )
             try await avatarManager.saveAvatar(avatar)
             dismiss()
         } catch {
