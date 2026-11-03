@@ -17,10 +17,11 @@ struct CreateAvatarView: View {
     @State private var category: AvatarCategory = .alien
     @State private var characterDescription: String = ""
     @State private var isSaving: Bool = false
+    @State private var alert: AnyAppAlert?
     
     private var canSave: Bool {
-        !name.trimmingCharacters(in: .whitespaces).isEmpty &&
-        !characterDescription.trimmingCharacters(in: .whitespaces).isEmpty }
+        !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+        !characterDescription.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
     
     var body: some View {
         NavigationStack {
@@ -41,27 +42,38 @@ struct CreateAvatarView: View {
                 }
                 
             }
+            .showCustomAlert(alert: $alert)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
                         dismiss()
                     }
+                    .disabled(isSaving)
                 }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") {
-                        Task { await saveAvatar() }
-                    }
-                    .disabled(!canSave || isSaving)
+                    saveButton
                 }
             }
             .navigationTitle("Create Avatar")
         }
     }
     
+    @ViewBuilder
+    private var saveButton: some View {
+        if isSaving {
+            ProgressView()
+        } else {
+            Button("Save") {
+                Task { await saveAvatar() }
+            }
+            .disabled(!canSave)
+        }
+    }
+    
     private func saveAvatar() async {
         guard let uid = authManager.currentUser?.uid else { return }
         isSaving = true
-        let description = characterDescription.trimmingCharacters(in: .whitespaces)
+        let description = characterDescription.trimmingCharacters(in: .whitespacesAndNewlines)
         
         do {
             let imageURL = try await avatarManager.generateImage(description: description)
@@ -77,7 +89,7 @@ struct CreateAvatarView: View {
             try await avatarManager.saveAvatar(avatar)
             dismiss()
         } catch {
-            print("Failed to save avatar: \(error)")
+            alert = .init(error: error)
         }
         isSaving = false
     }
