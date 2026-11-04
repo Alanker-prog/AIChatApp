@@ -15,7 +15,7 @@ struct EditProfileView: View {
     @State private var draftDisplayName: String = ""
     @State private var didLoadDraft: Bool = false
     @State private var isSaving: Bool = false
-    @State private var errorMessage: String?
+    @State private var alert: AnyAppAlert?
     
     private var currentUser: UserModel? {
         userManager.currentUser
@@ -47,17 +47,7 @@ struct EditProfileView: View {
                 saveButton
             }
         }
-        .alert(
-            "Something went wrong",
-            isPresented: Binding(
-                get: { errorMessage != nil },
-                set: { if !$0 { errorMessage = nil } }
-            )
-        ) {
-            Button("OK", role: .cancel) { }
-        } message: {
-            Text(errorMessage ?? "")
-        }
+        .showCustomAlert(alert: $alert)
         .task { loadDraftIfNeeded() }
     }
     
@@ -85,11 +75,11 @@ struct EditProfileView: View {
                 try await userManager.updateDisplayName(newName)
                 dismiss()
             } catch {
-                errorMessage = "Couldn't save your name. Please try again."
+                alert = .init(title: "Something went wrong", subtitle: "Couldn't save your name. Please try again.")
             }
         }
     }
-    
+
     private func loadDraftIfNeeded() {
         guard !didLoadDraft, let user = currentUser else { return }
         draftDisplayName = user.displayName ?? ""
