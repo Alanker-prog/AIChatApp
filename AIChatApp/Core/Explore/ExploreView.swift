@@ -13,6 +13,7 @@ struct ExploreView: View {
     
     @State private var showCreateAvatar: Bool = false
     @State private var isLoading: Bool = true
+    @State private var alert: AnyAppAlert?
     
     private let categories: [AvatarCategory] = AvatarCategory.allCases
     
@@ -31,6 +32,7 @@ struct ExploreView: View {
                 }
                 .padding()
             }
+            .showCustomAlert(alert: $alert)
             .navigationTitle("Explore")
             .task {
                 await loadAvatars()
@@ -55,7 +57,7 @@ struct ExploreView: View {
         do {
             try await avatarManager.loadExploreAvatars()
         } catch {
-            print("Failed to load avatars: \(error)")
+            alert = .init(error: error)
         }
         isLoading = false
     }
