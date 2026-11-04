@@ -30,8 +30,6 @@ struct FirestoreAvatarService: AvatarServiceProtocol {
     }
     
     func saveAvatar(_ avatar: AvatarModel) async throws {
-        try collection.document(avatar.id).setData(from: avatar)
-        
         let data = try Firestore.Encoder().encode(avatar)
         try await collection.document(avatar.id).setData(data)
     }
