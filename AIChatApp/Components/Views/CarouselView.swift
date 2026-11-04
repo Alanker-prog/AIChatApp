@@ -27,14 +27,20 @@ struct CarouselView<T: Identifiable, Content: View>: View {
                             .id(item.id)
                     }
                 }
+                .scrollTargetLayout()
             }
             .frame(height: 200)
             .scrollIndicators(.hidden)
-            .scrollTargetLayout()
             .scrollTargetBehavior(.paging)
             .scrollPosition(id: $selection)
-            .onChange(of: items.count) { _, _ in
-                updateSelectionIfNeeded()
+            .onChange(of: items.map(\.id)) { oldIDs, newIDs in
+                let addedIDs = newIDs.filter { !oldIDs.contains($0) }
+                
+                if let newID = addedIDs.first {
+                    withAnimation {
+                        selection = newID
+                    }
+                }
             }
             .onAppear {
                 updateSelectionIfNeeded()
