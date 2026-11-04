@@ -99,9 +99,9 @@ struct ExploreView: View {
                         }
                     }
                 }
+                .scrollTargetLayout()
             }
             .scrollIndicators(.hidden)
-            .scrollTargetLayout()
             .scrollTargetBehavior(.viewAligned)
             .frame(height: 140)
         }
