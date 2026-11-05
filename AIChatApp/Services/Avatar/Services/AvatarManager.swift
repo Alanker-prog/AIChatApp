@@ -36,6 +36,10 @@ class AvatarManager {
     func generateImage(description: String) async throws -> String {
         return try await imageService.generateImage(description: description)
     }
+    
+    func getAvatars(category: AvatarCategory) async throws -> [AvatarModel] {
+        return try await service.getAvatars(category: category)
+    }
 }
 
 #if DEBUG

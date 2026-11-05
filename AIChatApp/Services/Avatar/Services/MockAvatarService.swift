@@ -14,6 +14,12 @@ struct MockAvatarService: AvatarServiceProtocol {
         return AvatarModel.mocks
     }
     
+    func getAvatars(category: AvatarCategory) async throws -> [AvatarModel] {
+        try await Task.sleep(for: .seconds(0.5))
+        
+        return AvatarModel.mocks.filter { $0.category == category }
+    }
+
     func getPopularAvatars() async throws -> [AvatarModel] {
         try await Task.sleep(for: .seconds(0.5))
         return AvatarModel.mocks.shuffled()
