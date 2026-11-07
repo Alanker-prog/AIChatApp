@@ -24,6 +24,9 @@ enum AvatarCategory: String, Hashable, CaseIterable, Codable {
     case alien
     case dog
     case cat
+    var imageName: String {
+        ("category_\(rawValue)")
+    }
 }
 
 extension AvatarModel {

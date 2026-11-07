@@ -10,12 +10,19 @@ import SwiftUI
 struct CategoryCellView: View {
     
     var title: String = "Aliens"
-    var imageName: String = Constants.randomImage
+    var imageName: String = "category_man"
     var font: Font = .title2.bold()
     var cornerRadius: CGFloat = 16
     
     var body: some View {
-        ImageLoaderView(urlString: imageName)
+        Rectangle()
+            .opacity(0.001)
+            .overlay {
+                Image(imageName)
+                    .resizable()
+                    .scaledToFill()
+            }
+            .clipped()
             .aspectRatio(1, contentMode: .fit)
             .overlay(alignment: .bottomLeading, content: {
                 Text(title)

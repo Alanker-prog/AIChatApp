@@ -10,10 +10,12 @@ import SwiftUI
 struct ExploreView: View {
     
     @Environment(AvatarManager.self) private var avatarManager
-    
+    @Environment(AuthManager.self) private var authManager
+
     @State private var showCreateAvatar: Bool = false
     @State private var isLoading: Bool = true
     @State private var alert: AnyAppAlert?
+    @State private var selectedCategory: AvatarCategory?
     
     private let categories: [AvatarCategory] = AvatarCategory.allCases
     
@@ -39,6 +41,9 @@ struct ExploreView: View {
             }
             .sheet(isPresented: $showCreateAvatar, content: {
                 CreateAvatarView()
+            })
+            .navigationDestination(item: $selectedCategory, destination: { category in
+                CategoryListView(category: category)
             })
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -92,10 +97,10 @@ struct ExploreView: View {
                     ForEach(categories, id: \.self) { category in
                         CategoryCellView(
                             title: category.rawValue.capitalized,
-                            imageName: Constants.randomImage
+                            imageName: category.imageName
                         )
                         .anyButton(.plain) {
-                            
+                            selectedCategory = category
                         }
                     }
                 }
@@ -109,12 +114,12 @@ struct ExploreView: View {
     
     private var popularSection: some View {
         VStack(alignment: .leading, spacing: 16) {
-
+            
             Text("Popular")
                 .font(.title2.bold())
-
+            
             VStack(spacing: 8) {
-
+                
                 ForEach(avatarManager.popularAvatars) { avatar in
                     PopularCellView(
                         imageName: avatar.profileImageURL,
@@ -134,4 +139,5 @@ struct ExploreView: View {
 #Preview {
     ExploreView()
         .environment(AvatarManager.mock)
+        .environment(AuthManager.mockSignedIn)
 }
