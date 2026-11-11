@@ -10,12 +10,12 @@ import SwiftUI
 struct ExploreView: View {
     
     @Environment(AvatarManager.self) private var avatarManager
-    @Environment(AuthManager.self) private var authManager
 
     @State private var showCreateAvatar: Bool = false
     @State private var isLoading: Bool = true
     @State private var alert: AnyAppAlert?
     @State private var selectedCategory: AvatarCategory?
+    @State private var selectedAvatar: AvatarModel?
     
     private let categories: [AvatarCategory] = AvatarCategory.allCases
     
@@ -44,6 +44,9 @@ struct ExploreView: View {
             })
             .navigationDestination(item: $selectedCategory, destination: { category in
                 CategoryListView(category: category)
+            })
+            .navigationDestination(item: $selectedAvatar, destination: { avatar in
+                AvatarProfileView(avatar: avatar)
             })
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -80,7 +83,7 @@ struct ExploreView: View {
                     imageName: avatar.profileImageURL
                 )
                 .anyButton(.plain) {
-                    
+                    selectedAvatar = avatar
                 }
             }
         }
@@ -127,7 +130,7 @@ struct ExploreView: View {
                         subtitle: avatar.characterDescription
                     )
                     .anyButton(.highlight) {
-                        
+                        selectedAvatar = avatar
                     }
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
