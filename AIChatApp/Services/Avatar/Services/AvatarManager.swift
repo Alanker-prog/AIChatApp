@@ -40,6 +40,10 @@ class AvatarManager {
     func getAvatars(category: AvatarCategory) async throws -> [AvatarModel] {
         return try await service.getAvatars(category: category)
     }
+    
+    func incrementClickCount(avatarID: String) async throws {
+        try await service.incrementClickCount(avatarID: avatarID)
+    }
 }
 
 #if DEBUG

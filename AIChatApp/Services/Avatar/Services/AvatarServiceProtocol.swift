@@ -12,4 +12,5 @@ protocol AvatarServiceProtocol: Sendable {
     func getAvatars(category: AvatarCategory) async throws -> [AvatarModel]
     func getPopularAvatars() async throws -> [AvatarModel]
     func saveAvatar(_ avatar: AvatarModel) async throws
+    func incrementClickCount(avatarID: String) async throws
 }

@@ -28,4 +28,8 @@ struct MockAvatarService: AvatarServiceProtocol {
     func saveAvatar(_ avatar: AvatarModel) async throws {
         try await Task.sleep(for: .seconds(0.5))
     }
+    
+    func incrementClickCount(avatarID: String) async throws {
+        try await Task.sleep(for: .seconds(0.5))
+    }
 }
