@@ -70,6 +70,18 @@ struct ExploreView: View {
         isLoading = false
     }
     
+    private func onAvatarPressed(_ avatar: AvatarModel) {
+        selectedAvatar = avatar
+        // TODO: Move to "Start chat" when chat from profile is implemented
+        Task {
+            do {
+                try await avatarManager.incrementClickCount(avatarID: avatar.id)
+            } catch {
+                print("Failed to increment click count: \(error)")
+            }
+        }
+    }
+    
     private var featuredSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Featured Avatars")
@@ -83,7 +95,7 @@ struct ExploreView: View {
                     imageName: avatar.profileImageURL
                 )
                 .anyButton(.plain) {
-                    selectedAvatar = avatar
+                    onAvatarPressed(avatar)
                 }
             }
         }
@@ -130,7 +142,7 @@ struct ExploreView: View {
                         subtitle: avatar.characterDescription
                     )
                     .anyButton(.highlight) {
-                        selectedAvatar = avatar
+                        onAvatarPressed(avatar)
                     }
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
