@@ -16,6 +16,7 @@ struct AvatarModel: Identifiable, Hashable, Codable {
     let authorID: String
     let createdAt: Date
     let characterDescription: String
+    let clickCount: Int
 }
 
 enum AvatarCategory: String, Hashable, CaseIterable, Codable {
@@ -25,7 +26,7 @@ enum AvatarCategory: String, Hashable, CaseIterable, Codable {
     case dog
     case cat
     var imageName: String {
-        ("category_\(rawValue)")
+        "category_\(rawValue)"
     }
 }
 
@@ -38,6 +39,19 @@ extension AvatarModel {
         case authorID = "author_id"
         case createdAt = "created_at"
         case characterDescription = "character_description"
+        case clickCount = "click_count"
+    }
+    
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        category = try container.decode(AvatarCategory.self, forKey: .category)
+        profileImageURL = try container.decodeIfPresent(String.self, forKey: .profileImageURL)
+        authorID = try container.decode(String.self, forKey: .authorID)
+        createdAt = try container.decode(Date.self, forKey: .createdAt)
+        characterDescription = try container.decode(String.self, forKey: .characterDescription)
+        clickCount = try container.decodeIfPresent(Int.self, forKey: .clickCount) ?? 0
     }
 }
 
@@ -51,7 +65,8 @@ extension AvatarModel {
             profileImageURL: Constants.randomImage,
             authorID: "user_1",
             createdAt: .now,
-            characterDescription: "A green alien dancing among the stars"
+            characterDescription: "A green alien dancing among the stars",
+            clickCount: 10
         ),
         AvatarModel(
             id: "avatar_2",
@@ -60,7 +75,8 @@ extension AvatarModel {
             profileImageURL: Constants.randomImage,
             authorID: "user_2",
             createdAt: .now,
-            characterDescription: "A dog is running and barking in the yard"
+            characterDescription: "A dog is running and barking in the yard",
+            clickCount: 30
         ),
         AvatarModel(
             id: "avatar_3",
@@ -69,7 +85,8 @@ extension AvatarModel {
             profileImageURL: Constants.randomImage,
             authorID: "user_3",
             createdAt: .now,
-            characterDescription: "A cat sleeps in the sun in the garden"
+            characterDescription: "A cat sleeps in the sun in the garden",
+            clickCount: 100
         ),
         AvatarModel(
             id: "avatar_4",
@@ -78,7 +95,18 @@ extension AvatarModel {
             profileImageURL: Constants.randomImage,
             authorID: "user_4",
             createdAt: .now,
-            characterDescription: "A woman eats chocolate ice cream in a park"
+            characterDescription: "A woman eats chocolate ice cream in a park",
+            clickCount: 50
+        ),
+        AvatarModel(
+            id: "avatar_5",
+            name: "Qeita",
+            category: .man,
+            profileImageURL: nil,
+            authorID: "user_5",
+            createdAt: .now,
+            characterDescription: "A man climbs a mountain",
+            clickCount: 70
         )
     ]
     

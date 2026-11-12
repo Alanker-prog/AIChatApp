@@ -84,7 +84,8 @@ struct CreateAvatarView: View {
                 profileImageURL: imageURL,
                 authorID: uid,
                 createdAt: .now,
-                characterDescription: description
+                characterDescription: description,
+                clickCount: 0
             )
             try await avatarManager.saveAvatar(avatar)
             dismiss()
