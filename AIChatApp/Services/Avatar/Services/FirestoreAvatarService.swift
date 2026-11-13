@@ -21,6 +21,14 @@ struct FirestoreAvatarService: AvatarServiceProtocol {
         }
     }
     
+    func getAvatars(authorID: String) async throws -> [AvatarModel] {
+        let snapshot = try await collection.whereField("author_id", isEqualTo: authorID).getDocuments()
+        
+        return try snapshot.documents.map { document in
+            try document.data(as: AvatarModel.self)
+        }
+    }
+    
     func getFeaturedAvatars() async throws -> [AvatarModel] {
         let snapshot = try await collection.order(by: "created_at", descending: true).limit(to: 20).getDocuments()
         
