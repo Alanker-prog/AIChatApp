@@ -13,14 +13,6 @@ struct FirestoreAvatarService: AvatarServiceProtocol {
         Firestore.firestore().collection("avatars")
     }
     
-    func getFeaturedAvatars() async throws -> [AvatarModel] {
-        let snapshot = try await collection.order(by: "created_at", descending: true).limit(to: 20).getDocuments()
-        
-        return try snapshot.documents.map { document in
-            try document.data(as: AvatarModel.self)
-        }
-    }
-    
     func getAvatars(category: AvatarCategory) async throws -> [AvatarModel] {
         let snapshot = try await collection.whereField("category", isEqualTo: category.rawValue).limit(to: 20).getDocuments()
         
@@ -29,8 +21,16 @@ struct FirestoreAvatarService: AvatarServiceProtocol {
         }
     }
     
+    func getFeaturedAvatars() async throws -> [AvatarModel] {
+        let snapshot = try await collection.order(by: "created_at", descending: true).limit(to: 20).getDocuments()
+        
+        return try snapshot.documents.map { document in
+            try document.data(as: AvatarModel.self)
+        }
+    }
+    
     func getPopularAvatars() async throws -> [AvatarModel] {
-        let snapshot = try await collection.limit(to: 20).getDocuments()
+        let snapshot = try await collection.order(by: "click_count", descending: true).limit(to: 20).getDocuments()
 
         return try snapshot.documents.map { document in
             try document.data(as: AvatarModel.self)

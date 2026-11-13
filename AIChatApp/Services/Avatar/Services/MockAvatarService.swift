@@ -22,7 +22,7 @@ struct MockAvatarService: AvatarServiceProtocol {
 
     func getPopularAvatars() async throws -> [AvatarModel] {
         try await Task.sleep(for: .seconds(0.5))
-        return AvatarModel.mocks.shuffled()
+        return AvatarModel.mocks.sorted { $0.clickCount > $1.clickCount } 
     }
 
     func saveAvatar(_ avatar: AvatarModel) async throws {
