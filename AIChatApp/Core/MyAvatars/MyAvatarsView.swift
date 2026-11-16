@@ -51,7 +51,9 @@ struct MyAvatarsView: View {
             .navigationDestination(item: $selectedAvatar, destination: { avatar in
                 AvatarProfileView(avatar: avatar)
             })
-            .sheet(isPresented: $showCreateAvatar, content: {
+            .sheet(isPresented: $showCreateAvatar, onDismiss: {
+                Task { await loadAvatars() }
+            }, content: {
                 CreateAvatarView()
             })
             .showCustomAlert(alert: $alert)
