@@ -63,7 +63,7 @@ extension AvatarModel {
             name: "Alfa",
             category: .alien,
             profileImageURL: Constants.randomImage,
-            authorID: "user_1",
+            authorID: "mock_user_123",
             createdAt: .now,
             characterDescription: "A green alien dancing among the stars",
             clickCount: 10
@@ -73,7 +73,7 @@ extension AvatarModel {
             name: "Beta",
             category: .dog,
             profileImageURL: Constants.randomImage,
-            authorID: "user_2",
+            authorID: "mock_user_123",
             createdAt: .now,
             characterDescription: "A dog is running and barking in the yard",
             clickCount: 30

@@ -7,15 +7,12 @@
 
 import SwiftUI
 
-// MARK: - AppTab
-
 enum AppTab {
     case explore
     case chats
     case profile
+    case myAvatars
 }
-
-// MARK: - TabBarView
 
 struct TabBarView: View {
     
@@ -31,6 +28,10 @@ struct TabBarView: View {
                 ChatsView()
             }
             
+            Tab("myAvatars", systemImage: "person.crop.rectangle.stack", value: .myAvatars) {
+                MyAvatarsView()
+            }
+            
             Tab("Profile", systemImage: "person.fill", value: .profile) {
                 ProfileView()
             }
@@ -41,4 +42,7 @@ struct TabBarView: View {
 #Preview {
     TabBarView()
         .environment(AppState())
+        .environment(AuthManager.mockSignedIn)
+        .environment(UserManager.mock)
+        .environment(AvatarManager.mock)
 }
