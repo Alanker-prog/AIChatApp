@@ -48,6 +48,16 @@ struct MyAvatarsView: View {
                 }
             }
             .navigationTitle("My Avatars")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showCreateAvatar = true
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+
+                }
+            }
             .navigationDestination(item: $selectedAvatar, destination: { avatar in
                 AvatarProfileView(avatar: avatar)
             })
