@@ -16,9 +16,9 @@ class AvatarManager {
     private(set) var featuredAvatars: [AvatarModel] = []
     private(set) var popularAvatars: [AvatarModel] = []
     
-    init(service: AvatarServiceProtocol, imageServiсe: ImageGenerationServiceProtocol) {
+    init(service: AvatarServiceProtocol, imageService: ImageGenerationServiceProtocol) {
         self.service = service
-        self.imageService = imageServiсe
+        self.imageService = imageService
     }
     
     func loadExploreAvatars() async throws {
@@ -53,7 +53,7 @@ class AvatarManager {
 #if DEBUG
 extension AvatarManager {
     static var mock: AvatarManager {
-        AvatarManager(service: MockAvatarService(), imageServiсe: MockImageGenerationService())
+        AvatarManager(service: MockAvatarService(), imageService: MockImageGenerationService())
     }
 }
 #endif
