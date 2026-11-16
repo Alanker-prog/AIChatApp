@@ -9,27 +9,28 @@ import Foundation
 
 struct MockAvatarService: AvatarServiceProtocol {
     
+    var avatars: [AvatarModel] = AvatarModel.mocks
+    
     func getFeaturedAvatars() async throws -> [AvatarModel] {
         try await Task.sleep(for: .seconds(0.5))
-        return AvatarModel.mocks
+        return avatars
     }
     
     func getAvatars(category: AvatarCategory) async throws -> [AvatarModel] {
         try await Task.sleep(for: .seconds(0.5))
         
-        return AvatarModel.mocks.filter { $0.category == category }
+        return avatars.filter { $0.category == category }
     }
     
     func getAvatars(authorID: String) async throws -> [AvatarModel] {
         try await Task.sleep(for: .seconds(0.5))
         
-        return AvatarModel.mocks.filter { $0.authorID == authorID }
+        return avatars.filter { $0.authorID == authorID }
     }
-
 
     func getPopularAvatars() async throws -> [AvatarModel] {
         try await Task.sleep(for: .seconds(0.5))
-        return AvatarModel.mocks.sorted { $0.clickCount > $1.clickCount } 
+        return avatars.sorted { $0.clickCount > $1.clickCount }
     }
 
     func saveAvatar(_ avatar: AvatarModel) async throws {

@@ -77,3 +77,8 @@ struct MyAvatarsView: View {
         .environment(AuthManager.mockSignedIn)
         .environment(AvatarManager.mock)
 }
+#Preview("Empty") {
+    MyAvatarsView()
+        .environment(AuthManager.mockSignedIn)
+        .environment(AvatarManager.init(service: MockAvatarService(avatars: []), imageService: MockImageGenerationService()))
+}
