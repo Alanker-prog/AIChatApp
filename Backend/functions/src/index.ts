@@ -1,6 +1,7 @@
 import {setGlobalOptions} from "firebase-functions";
 import {defineSecret} from "firebase-functions/params";
 import {onCall, HttpsError} from "firebase-functions/https";
+import {onDocumentDeleted} from "firebase-functions/firestore";
 import * as logger from "firebase-functions/logger";
 import {initializeApp} from "firebase-admin/app";
 import {getStorage, getDownloadURL} from "firebase-admin/storage";
@@ -57,3 +58,33 @@ export const generateAvatarImage = onCall(
     return {imageURL};
   }
 );
+
+export const deleteAvatarImage = onDocumentDeleted(
+  {document: "avatars/{avatarId}", region: "europe-north1"},
+  async (event) => {
+    const data = event.data?.data();
+    const imageURL = data?.profile_image_url;
+    const authorID = data?.author_id;
+    if (typeof imageURL !== "string" || typeof authorID !== "string") {
+      return;
+    }
+
+    const path = storagePathFromURL(imageURL);
+    if (!path || !path.startsWith(`avatars/${authorID}/`)) {
+      logger.warn("Skip image cleanup: unexpected path", {avatarId: event.params.avatarId});
+      return;
+    }
+
+    await getStorage().bucket().file(path).delete({ignoreNotFound: true});
+    logger.info("Avatar image deleted", {avatarId: event.params.avatarId, path});
+  }
+);
+
+function storagePathFromURL(url: string): string | null {
+  try {
+    const encodedPath = new URL(url).pathname.split("/o/")[1];
+    return encodedPath ? decodeURIComponent(encodedPath) : null;
+  } catch {
+    return null;
+  }
+}
