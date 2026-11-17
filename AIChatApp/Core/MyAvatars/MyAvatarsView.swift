@@ -44,10 +44,18 @@ struct MyAvatarsView: View {
                         .anyButton {
                             selectedAvatar = avatar
                         }
+                        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                            Button(role: .destructive) {
+                                onDeletePressed(avatar)
+                            } label: {
+                                Label("Delete", systemImage: "trash")
+                            }
+                        }
                     }
                 }
             }
             .navigationTitle("My Avatars")
+            .showCustomAlert(alert: $alert)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -66,7 +74,6 @@ struct MyAvatarsView: View {
             }, content: {
                 CreateAvatarView()
             })
-            .showCustomAlert(alert: $alert)
             .task {
                 await loadAvatars()
             }
@@ -82,6 +89,17 @@ struct MyAvatarsView: View {
             alert = .init(error: error)
         }
     }
+    
+    private func onDeletePressed(_ avatar: AvatarModel) {
+        Task {
+            do {
+                try await avatarManager.deleteAvatar(avatarID: avatar.id)
+                avatars.removeAll { $0.id == avatar.id }
+            } catch {
+                alert = .init(error: error)
+            }
+        }
+    }
 }
 
 #Preview("With avatars") {
@@ -92,5 +110,5 @@ struct MyAvatarsView: View {
 #Preview("Empty") {
     MyAvatarsView()
         .environment(AuthManager.mockSignedIn)
-        .environment(AvatarManager.init(service: MockAvatarService(avatars: []), imageService: MockImageGenerationService()))
+        .environment(AvatarManager(service: MockAvatarService(avatars: []), imageService: MockImageGenerationService()))
 }
