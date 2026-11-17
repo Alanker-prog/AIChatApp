@@ -33,6 +33,10 @@ class AvatarManager {
         featuredAvatars.insert(avatar, at: 0)
     }
     
+    func deleteAvatar(avatarID: String) async throws {
+        try await service.deleteAvatar(avatarID: avatarID)
+    }
+    
     func generateImage(description: String) async throws -> String {
         return try await imageService.generateImage(description: description)
     }

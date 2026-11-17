@@ -50,6 +50,10 @@ struct FirestoreAvatarService: AvatarServiceProtocol {
         try await collection.document(avatar.id).setData(data)
     }
     
+    func deleteAvatar(avatarID: String) async throws {
+        try await collection.document(avatarID).delete()
+    }
+    
     func incrementClickCount(avatarID: String) async throws {
         try await collection.document(avatarID).updateData([
             "click_count": FieldValue.increment(Int64(1))

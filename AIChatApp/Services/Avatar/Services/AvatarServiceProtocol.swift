@@ -13,5 +13,6 @@ protocol AvatarServiceProtocol: Sendable {
     func getAvatars(authorID: String) async throws -> [AvatarModel]
     func getPopularAvatars() async throws -> [AvatarModel]
     func saveAvatar(_ avatar: AvatarModel) async throws
+    func deleteAvatar(avatarID: String) async throws
     func incrementClickCount(avatarID: String) async throws
 }

@@ -37,6 +37,10 @@ struct MockAvatarService: AvatarServiceProtocol {
         try await Task.sleep(for: .seconds(0.5))
     }
     
+    func deleteAvatar(avatarID: String) async throws {
+        try await Task.sleep(for: .seconds(0.5))
+    }
+    
     func incrementClickCount(avatarID: String) async throws {
         try await Task.sleep(for: .seconds(0.5))
     }
