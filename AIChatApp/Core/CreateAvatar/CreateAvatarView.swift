@@ -98,6 +98,5 @@ struct CreateAvatarView: View {
 
 #Preview {
     CreateAvatarView()
-        .environment(AuthManager.mockSignedIn)
-        .environment(AvatarManager.mock)
+        .previewEnvironment()
 }

@@ -72,5 +72,5 @@ struct OnboardingCompletedView: View {
 
 #Preview {
     OnboardingCompletedView( selectedColor: .yellow)
-        .environment(AppState())
+        .previewEnvironment()
 }

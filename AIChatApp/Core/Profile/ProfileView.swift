@@ -109,7 +109,6 @@ struct ProfileView: View {
 
 #Preview {
     ProfileView()
+        .previewEnvironment()
         .preferredColorScheme(.dark)
-        .environment(AppState())
-        .environment(UserManager(service: MockUserService(), currentUser: .mock))
 }

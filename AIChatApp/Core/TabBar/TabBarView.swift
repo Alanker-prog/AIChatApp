@@ -41,8 +41,5 @@ struct TabBarView: View {
 
 #Preview {
     TabBarView()
-        .environment(AppState())
-        .environment(AuthManager.mockSignedIn)
-        .environment(UserManager.mock)
-        .environment(AvatarManager.mock)
+        .previewEnvironment()
 }

@@ -88,17 +88,14 @@ struct EditProfileView: View {
 }
 
 #Preview("Empty") {
-    NavigationStack {
-        EditProfileView()
-    }
-    .environment(UserManager(service: MockUserService()))
-    .preferredColorScheme(.dark)
+    NavigationStack { EditProfileView() }
+        .environment(UserManager(service: MockUserService()))
+        .previewEnvironment()
+        .preferredColorScheme(.dark)
 }
 
 #Preview("With user") {
-    NavigationStack {
-        EditProfileView()
-    }
-    .environment(UserManager(service: MockUserService(), currentUser: .mock))
-    .preferredColorScheme(.dark)
+    NavigationStack { EditProfileView() }
+        .previewEnvironment()
+        .preferredColorScheme(.dark)
 }

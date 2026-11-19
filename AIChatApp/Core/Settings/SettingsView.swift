@@ -91,16 +91,13 @@ struct SettingsView: View {
 
 #Preview("Anonymous") {
     SettingsView()
-        .environment(AppState())
         .environment(AuthManager.mockAnonymous)
-        .environment(UserManager(service: MockUserService(), currentUser: .mock))
+        .previewEnvironment()
         .preferredColorScheme(.dark)
 }
 
 #Preview("Authenticated") {
     SettingsView()
-        .environment(AppState())
-        .environment(AuthManager.mockSignedIn)
-        .environment(UserManager(service: MockUserService(), currentUser: nil))
+        .previewEnvironment()
         .preferredColorScheme(.dark)
 }

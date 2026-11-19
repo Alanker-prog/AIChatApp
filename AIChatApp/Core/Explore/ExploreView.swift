@@ -153,6 +153,5 @@ struct ExploreView: View {
 
 #Preview {
     ExploreView()
-        .environment(AvatarManager.mock)
-        .environment(AuthManager.mockSignedIn)
+        .previewEnvironment()
 }

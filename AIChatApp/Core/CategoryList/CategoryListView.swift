@@ -51,6 +51,6 @@ struct CategoryListView: View {
 
 #Preview {
     NavigationStack { CategoryListView(category: .alien) }
-        .environment(AvatarManager.mock)
+        .previewEnvironment()
         .preferredColorScheme(.dark)
 }

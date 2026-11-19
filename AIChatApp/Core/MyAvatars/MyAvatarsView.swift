@@ -104,11 +104,10 @@ struct MyAvatarsView: View {
 
 #Preview("With avatars") {
     MyAvatarsView()
-        .environment(AuthManager.mockSignedIn)
-        .environment(AvatarManager.mock)
+        .previewEnvironment()
 }
 #Preview("Empty") {
     MyAvatarsView()
-        .environment(AuthManager.mockSignedIn)
         .environment(AvatarManager(service: MockAvatarService(avatars: []), imageService: MockImageGenerationService()))
+        .previewEnvironment()
 }
