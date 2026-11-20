@@ -13,7 +13,7 @@ struct ExploreView: View {
 
     @State private var showCreateAvatar: Bool = false
     @State private var isLoading: Bool = true
-    @State private var alert: AnyAppAlert?
+    @State private var loadFailed = false
     @State private var selectedCategory: AvatarCategory?
     @State private var selectedAvatar: AvatarModel?
     
@@ -26,15 +26,29 @@ struct ExploreView: View {
                     if isLoading {
                         ProgressView()
                             .frame(maxWidth: .infinity)
+                    } else if loadFailed {
+                        
+                        ContentUnavailableView {
+                            Label("Something went wrong", systemImage: "wifi.exclamationmark")
+                        } description: {
+                            Text("Failed to load avatars. Please try again.")
+                        } actions: {
+                            Button("Try again") {
+                                Task { await loadAvatars() }
+                            }
+                        }
                     } else {
-                        featuredSection
+                        if !avatarManager.featuredAvatars.isEmpty {
+                            featuredSection
+                        }
                         categoriesSection
-                        popularSection
+                        if !avatarManager.popularAvatars.isEmpty {
+                            popularSection
+                        }
                     }
                 }
                 .padding()
             }
-            .showCustomAlert(alert: $alert)
             .navigationTitle("Explore")
             .task {
                 await loadAvatars()
@@ -55,17 +69,19 @@ struct ExploreView: View {
                     } label: {
                         Image(systemName: "plus")
                     }
-
+                    
                 }
             }
         }
     }
     
     private func loadAvatars() async {
+        isLoading = true
+        loadFailed = false
         do {
             try await avatarManager.loadExploreAvatars()
         } catch {
-            alert = .init(error: error)
+            loadFailed = true
         }
         isLoading = false
     }
@@ -151,7 +167,25 @@ struct ExploreView: View {
     }
 }
 
-#Preview {
+#Preview("Has data") {
     ExploreView()
+        .previewEnvironment()
+}
+
+#Preview("No data") {
+    ExploreView()
+        .environment(AvatarManager(service: MockAvatarService(avatars: []), imageService: MockImageGenerationService()))
+        .previewEnvironment()
+}
+
+#Preview("Slow loading") {
+    ExploreView()
+        .environment(AvatarManager(service: MockAvatarService(delay: 5), imageService: MockImageGenerationService()))
+        .previewEnvironment()
+}
+
+#Preview("Error") {
+    ExploreView()
+        .environment(AvatarManager(service: MockAvatarService(delay: 2, showError: true), imageService: MockImageGenerationService()))
         .previewEnvironment()
 }
