@@ -1,5 +1,5 @@
 //
-//  View+EXT.swift
+//  View+Styling.swift
 //  AIChatApp
 //
 //  Created by Алан Парастаев on 15.04.2026.
