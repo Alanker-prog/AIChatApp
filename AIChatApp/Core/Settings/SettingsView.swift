@@ -13,7 +13,8 @@ struct SettingsView: View {
     @Environment(AppState.self) private var appState
     @Environment(AuthManager.self) private var authManager
     @Environment(UserManager.self) private var userManager
-    @State private var showCreateAccauntView: Bool = false
+    @State private var showCreateAccountView: Bool = false
+    @State private var alert: AnyAppAlert?
     private var isAnonymousUser: Bool {
         authManager.currentUser?.isAnonymous ?? true
     }
@@ -21,8 +22,6 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             List {
-                
-                // MARK: - Appearance
                 Section("Appearance") {
                     Toggle(
                         "Dark Mode",
@@ -32,12 +31,10 @@ struct SettingsView: View {
                         )
                     )
                 }
-                
-                // MARK: - Account
                 Section("Account") {
                     if isAnonymousUser {
                         Button {
-                            onCreateAccauntPressed()
+                            onCreateAccountPressed()
                         } label: {
                             Text("Log in")
                                 .foregroundStyle(.blue)
@@ -52,8 +49,9 @@ struct SettingsView: View {
                     }
                 }
             }
+            .showCustomAlert(alert: $alert)
             .navigationTitle("Settings")
-            .sheet(isPresented: $showCreateAccauntView) {
+            .sheet(isPresented: $showCreateAccountView) {
                 CreateAccountView()
                     .presentationDetents([.medium])
             }
@@ -76,7 +74,7 @@ struct SettingsView: View {
             try authManager.signOut()
             dismiss()
         } catch {
-            print("Sign out failed: \(error)")
+            alert = .init(error: error)
         }
     }
     
@@ -84,8 +82,8 @@ struct SettingsView: View {
     // currentUser остаётся nil, а единственный путь входа (эта кнопка → CreateAccountView)
     // ждёт реализации Apple Sign In. Исчезнет, когда будет сделан Apple Sign In
     // (link credential к текущему uid). Требует платного Developer-аккаунта.
-    private func onCreateAccauntPressed() {
-        showCreateAccauntView = true
+    private func onCreateAccountPressed() {
+        showCreateAccountView = true
     }
 }
 
