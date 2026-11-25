@@ -7,21 +7,26 @@
 
 import Foundation
 
-struct ChatModel: Identifiable, Hashable {
+struct ChatModel: Identifiable, Hashable, Codable {
     
     let id: String
     let userID: String
     let avatarID: String
     let createdAt: Date
     let updatedAt: Date
-
-    var isNewChat: Bool {
-        let diff = Date.now.timeIntervalSince(createdAt)
-        return diff < 60 * 60 * 24  // меньше 24 часов
-    }
+    let lastMessageText: String?
 }
 
-// MARK: - Mocks
+extension ChatModel {
+    enum CodingKeys: String, CodingKey {
+        case id = "id"
+        case userID = "user_id"
+        case avatarID = "avatar_id"
+        case createdAt = "created_at"
+        case updatedAt = "updated_at"
+        case lastMessageText = "last_message_text"
+    }
+}
 
 extension ChatModel {
     
@@ -31,28 +36,32 @@ extension ChatModel {
             userID: "user_1",
             avatarID: "avatar_1",
             createdAt: .now,
-            updatedAt: .now
+            updatedAt: .now,
+            lastMessageText: "Hello AI"
         ),
         ChatModel(
             id: "mock_chat_2",
             userID: "user_1",
             avatarID: "avatar_2",
             createdAt: .distantPast,
-            updatedAt: .now
+            updatedAt: .now,
+            lastMessageText: nil
         ),
         ChatModel(
             id: "mock_chat_3",
             userID: "user_1",
             avatarID: "avatar_3",
             createdAt: .distantPast,
-            updatedAt: .distantPast
+            updatedAt: .distantPast,
+            lastMessageText: "Last message"
         ),
         ChatModel(
             id: "mock_chat_4",
             userID: "user_1",
             avatarID: "avatar_4",
             createdAt: .now,
-            updatedAt: .now
+            updatedAt: .now,
+            lastMessageText: nil
         )
     ]
     
