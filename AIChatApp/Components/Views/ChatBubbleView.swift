@@ -48,19 +48,10 @@ struct ChatBubbleView: View {
         .clipShape(bubbleShape)
     }
     
-    // Контент сообщения: текст, картинка, или оба
-    @ViewBuilder
     private var contentView: some View {
-        if let text = message.content.text {
-            Text(text)
-        }
-
-        if let imageURL = message.content.imageURL {
-            ImageLoaderView(urlString: imageURL)
-                .frame(width: 240, height: 240) 
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-            }
-        }
+        Text(message.text)
+        
+    }
     
     private var bubbleColor: Color {
         message.isAIMessage ? Color(.secondarySystemBackground) : .blue
@@ -109,14 +100,14 @@ struct ChatBubbleView: View {
         // проваленное сообщение — показываем кнопку "повторить"
                 ChatBubbleView(
                     message: ChatMessageModel(
-                        id: "failed_1",
-                        chatID: "mock_chat_1",
-                        authorID: "user_1",
-                        content: AIOutput(text: "This message failed to send", imageURL: nil),
-                        seenByIDs: nil,
+                        id: "Failed_1",
+                        chatID: "",
+                        role: .user,
+                        text: "Is vessage failed",
                         createdAt: .now,
                         status: .failed
-                    ),
+                    )
+                       ,
                     onRetryPressed: {
                         print("Retry tapped")
                     }

@@ -7,45 +7,42 @@
 
 import Foundation
 
-// MARK: - Message Status
-
-enum MessageStatus: String, Hashable {
-    case sending    // уходит на сервер
-    case sent       // успешно доставлено
-    case failed     // ошибка отправки — показываем "повторить"
+enum MessageRole: String, Hashable, Codable {
+    case user
+    case assistant
 }
 
-// MARK: - Chat Message Model
+enum MessageStatus: String, Hashable {
+    case sending
+    case sent
+    case failed
+}
 
-struct ChatMessageModel: Identifiable, Hashable {
+struct ChatMessageModel: Identifiable, Hashable, Codable {
 
     let id: String
     let chatID: String
-    let authorID: String?      // nil = сообщение от AI
-    let content: AIOutput
-    let seenByIDs: [String]?
+    let role: MessageRole
+    let text: String
     let createdAt: Date
-    let status: MessageStatus
 
+    var status: MessageStatus = .sent
+    
     var isAIMessage: Bool {
-        authorID == nil
+        role == .assistant
     }
 
-    func hasBeenSeenBy(userId: String) -> Bool {
-        guard let seenByIDs else { return false }
-        return seenByIDs.contains(userId)
+}
+
+extension ChatMessageModel {
+    enum CodingKeys: String, CodingKey {
+        case id = "id"
+        case chatID = "chat_id"
+        case role = "role"
+        case text = "text"
+        case createdAt = "created_at"
     }
 }
-
-// MARK: - AIOutput
-// Контейнер контента сообщения: может хранить текст, изображение или и то и другое.
-
-struct AIOutput: Hashable {
-    let text: String?
-    let imageURL: String?
-}
-
-// MARK: - Mocks
 
 extension ChatMessageModel {
 
@@ -53,65 +50,44 @@ extension ChatMessageModel {
         ChatMessageModel(
             id: "mock_message_1",
             chatID: "mock_chat_1",
-            authorID: "user_1",          // сообщение от пользователя
-            content: AIOutput(
-                text: "Hello! Who are you?",
-                imageURL: nil
-            ),
-            seenByIDs: ["user_1"],
+            role: .user,
+            text: "Hello have are you?",
             createdAt: .now,
-            status: .sent
+            status: .sending
         ),
         ChatMessageModel(
             id: "mock_message_2",
             chatID: "mock_chat_1",
-            authorID: nil,               // сообщение от AI
-            content: AIOutput(
-                text: "Hi! I am Alfa, an alien dancing in the space!",
-                imageURL: nil
-            ),
-            seenByIDs: ["user_1"],
+            role: .assistant,
+            text: "Hi! I am Alfa, an alien dancing in the space!",
             createdAt: .now,
             status: .sent
         ),
         ChatMessageModel(
             id: "mock_message_3",
             chatID: "mock_chat_1",
-            authorID: "user_1",
-            content: AIOutput(
-                text: "Can you show me a picture?",
-                imageURL: nil
-            ),
-            seenByIDs: ["user_1"],
+            role: .user,
+            text: "Who buid the pyramids?",
             createdAt: .now,
-            status: .sent
+            status: .sending
         ),
         ChatMessageModel(
             id: "mock_message_4",
             chatID: "mock_chat_1",
-            authorID: nil,               // AI отвечает картинкой
-            content: AIOutput(
-                text: nil,
-                imageURL: Constants.randomImage
-            ),
-            seenByIDs: ["user_1"],
+            role: .assistant,
+            text: "The pyramids built by the Egyptians",
             createdAt: .now,
             status: .sent
         ),
-        // проваленное сообщение — показываем кнопку "повторить"
         ChatMessageModel(
             id: "mock_message_5",
             chatID: "mock_chat_1",
-            authorID: "user_1",              // моё сообщение, которое не отправилось
-            content: AIOutput(
-                text: "This message failed to send",
-                imageURL: nil
-            ),
-            seenByIDs: nil,
+            role: .user,
+            text: "Where is Mount Fuji?",
             createdAt: .now,
-            status: .failed                  // 👈 упавшее
+            status: .failed
         )
     ]
-
+    
     static let mock: ChatMessageModel = mocks[0]
 }

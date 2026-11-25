@@ -21,7 +21,7 @@ struct ChatRowCellViewBuilder: View {
         ChatRowCellView(
             imageName: avatar?.profileImageURL,
             headline: avatar?.name,
-            subheadline: lastChatMessage?.content.text,
+            subheadline: lastChatMessage?.text,
             hasNewMessage: hasNewChat
         )
         .task {
@@ -32,9 +32,9 @@ struct ChatRowCellViewBuilder: View {
         }
     }
     
+    // TODO: unread badge (deferred, see chat layer plan)
     private var hasNewChat: Bool {
-        guard let lastChatMessage else { return false }
-        return !lastChatMessage.hasBeenSeenBy(userId: currentUserId)
+        false
     }
 }
 

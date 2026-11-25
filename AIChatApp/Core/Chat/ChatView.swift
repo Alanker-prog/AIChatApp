@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct ChatView: View {
-
+    
     let chat: ChatModel    // 👈 какой чат открыли
     let avatar: AvatarModel  // 👈 Фото и Ник собеседника этого чата
     private let fieldCornerRadius: CGFloat = 30
     private let horizontalPadding: CGFloat = 12
-
+    
     @State private var chatMessages: [ChatMessageModel] = []
     @State private var textFieldText: String = ""
-
+    
     var body: some View {
         VStack(spacing: 0) {
             ScrollViewReader(content: { proxi in
@@ -64,12 +64,12 @@ struct ChatView: View {
             loadMessages()
         }
     }
-
+    
     private func loadMessages() {
         // пока фильтруем моки по chatID; позже — запрос к сервису
         chatMessages = ChatMessageModel.mocks.filter { $0.chatID == chat.id }
     }
-
+    
     private func onRetryPressed(_ message: ChatMessageModel) {
         print("Retry pressed for message: \(message.id)")
         // TODO: подключить реальную переотправку через сервис/ViewModel
@@ -79,19 +79,18 @@ struct ChatView: View {
         let newMessageText = textFieldText.trimmingCharacters(in: .whitespaces)
         guard !newMessageText.isEmpty else { return }
         
-      let message = ChatMessageModel(
+        let message = ChatMessageModel(
             id: UUID().uuidString,
             chatID: chat.id,
-            authorID: chat.userID,
-            content: AIOutput(text: newMessageText, imageURL: nil),
-            seenByIDs: [chat.userID],
+            role: .user,
+            text: newMessageText,
             createdAt: .now,
             status: .sent
         )
         
         chatMessages.append(message)
         textFieldText = ""
-        }
+    }
     
     private func scrollToBottom(proxi: ScrollViewProxy) {
         guard let lastMessage = chatMessages.last else { return }
