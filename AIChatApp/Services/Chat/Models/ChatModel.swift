@@ -33,7 +33,7 @@ extension ChatModel {
     static let mocks: [ChatModel] = [
         ChatModel(
             id: "mock_chat_1",
-            userID: "user_1",
+            userID: "mock_user_123",
             avatarID: "avatar_1",
             createdAt: .now,
             updatedAt: .now,
@@ -41,7 +41,7 @@ extension ChatModel {
         ),
         ChatModel(
             id: "mock_chat_2",
-            userID: "user_1",
+            userID: "mock_user_123",
             avatarID: "avatar_2",
             createdAt: .distantPast,
             updatedAt: .now,
@@ -49,7 +49,7 @@ extension ChatModel {
         ),
         ChatModel(
             id: "mock_chat_3",
-            userID: "user_1",
+            userID: "mock_user_123",
             avatarID: "avatar_3",
             createdAt: .distantPast,
             updatedAt: .distantPast,
@@ -57,8 +57,16 @@ extension ChatModel {
         ),
         ChatModel(
             id: "mock_chat_4",
-            userID: "user_1",
+            userID: "mock_user_123",
             avatarID: "avatar_4",
+            createdAt: .now,
+            updatedAt: .now,
+            lastMessageText: nil
+        ),
+        ChatModel(
+            id: "mock_chat_5",
+            userID: "user_1",
+            avatarID: "avatar_5",
             createdAt: .now,
             updatedAt: .now,
             lastMessageText: nil
